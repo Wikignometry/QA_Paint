@@ -8,14 +8,11 @@ class Tools():
         self.name = name
         self.location = location
         self.status = False
-    
 
 class Pen(Tools):
     def __init__(self, icon, name, location):
         super().__init__(icon, name, location)
         self.points = []
-
-
     def assignPoint(self, x, y):
         self.points.append((x, y))
 
@@ -43,10 +40,6 @@ def mouseMoved(app,event):
 def redrawAll(app, canvas):
     app.pen.draw(canvas)
     pass
-
-
-
-
 
 runApp(width=500,height=500)
 
