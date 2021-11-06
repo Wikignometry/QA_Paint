@@ -1,26 +1,23 @@
 class Oval():
-    def __init__(self):
-        self.points = []
-        self.currentLocation = (0, 0)
+    def __init__(self, x, y):
+        self.points = [(x, y)]
+        self.status = 0
+        self.currentLocation = (x, y)
     
-    def assignPoint(self, x, y):
-        self.points.append((x, y))
+    def __repr__(self):
+        return f'Oval({self.points[0]}, {self.points[-1]})'
     
+    def assignPoints(self, x, y):
+        if self.status < 1:
+            self.points.append((x, y))
+            self.status += 1
+
     def draw(self, canvas):
-        for i in range(0, len(self.points)-1,2):
-            x0,y0=self.points[i]
-            x1,y1=self.points[i+1]
-            # if math.isclose(x0,x1,abs_tol=1)
-            canvas.create_oval(x0, y0, x1, y1, width=5)
-        if len(self.points)%2==1:
-            x0,y0=self.points[-1]
-            x1,y1=self.currentLocation
-            canvas.create_oval(x0, y0, x1, y1, width=5)
-    
-    def undo(self):
-        if len(self.points) > 0:
-            if len(self.points)%2==0:
-                self.points.pop()
-                self.points.pop()
-            else:
-                self.points.pop()
+        if len(self.points) == 1:
+            x0, y0 = self.points[0]
+            x1, y1 = self.currentLocation
+        else:
+            x0, y0 = self.points[0]
+            x1, y1 = self.points[1]
+        
+        canvas.create_oval(x0, y0, x1, y1, width = 3)
