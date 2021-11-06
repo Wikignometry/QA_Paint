@@ -486,9 +486,9 @@ class App(object):
     @_safeMethod
     def _keyPressedWrapper(app, event):
         event = App.KeyEventWrapper(event)
-        if (event.key == 'control-s'):
-            app.saveSnapshot()
-        elif (event.key == 'control-p'):
+        # if (event.key == 'control-s'):
+        #     app.saveSnapshot()
+        if (event.key == 'control-p'):
             app._togglePaused()
             app._redrawAllWrapper()
         elif (event.key == 'control-q'):
