@@ -51,15 +51,20 @@ def mouseReleased(app, event):
         app.image.action["crop"]["done"] = True
 
 
+def keyPressed(app, event):
+    # https://pythonspot.com/tk-file-dialogs/
+    if event.key == "control-o":
+        app.image.importImage(path=filedialog.askopenfilename(defaultextension=".jpg",))
+    if event.key == "control-e":
+        app.image.exportImage(path=filedialog.asksaveasfilename(defaultextension=".jpg", filetypes=[("ImageFile", ".jpg")]))
+
+
 def timerFired(app):
     app.image.update()
 
 
 def appStarted(app):
     app.image = AppImage()
-    # testing purposes
-    app.image.importImage(path="./test/importImage.jpg")
-    app.image.exportImage(path="./test/exportImage.jpg")
 
 
 def redrawAll(app, canvas):
