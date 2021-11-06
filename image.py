@@ -54,9 +54,11 @@ def mouseReleased(app, event):
 def keyPressed(app, event):
     # https://pythonspot.com/tk-file-dialogs/
     if event.key == "control-o":
-        app.image.importImage(path=filedialog.askopenfilename(defaultextension=".jpg",))
+        filePath = filedialog.askopenfilename(defaultextension=".jpg",)
+        if filePath: app.image.importImage(path=filePath)
     if event.key == "control-e":
-        app.image.exportImage(path=filedialog.asksaveasfilename(defaultextension=".jpg", filetypes=[("ImageFile", ".jpg")]))
+        filePath = filedialog.asksaveasfilename(defaultextension=".jpg", filetypes=[("ImageFile", ".jpg")])
+        if filePath: app.image.exportImage(path=filePath)
 
 
 def timerFired(app):
