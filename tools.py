@@ -25,10 +25,10 @@ class Pen(Tools):
             x1,y1=self.points[i+1]
             # if math.isclose(x0,x1,abs_tol=1)
             canvas.create_line(x0, y0, x1, y1, width=5)
-
-
-
-
+        if len(self.points)%2==1:
+            x0,y0=self.points[-1]
+            x1,y1=self.currentLocation
+            canvas.create_line(x0, y0, x1, y1, width=5)
 
 def appStarted(app):
     app.pen = Pen('pwn', 'pen', (50,50))
@@ -36,6 +36,9 @@ def appStarted(app):
 def mousePressed(app, event):
     app.pen.assignPoint(event.x, event.y)
     pass
+
+def mouseMoved(app,event):
+    app.pen.currentLocation=(event.x,event.y)
 
 def redrawAll(app, canvas):
     app.pen.draw(canvas)
