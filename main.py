@@ -4,14 +4,9 @@ from polygon import *
 from line import *
 from oval import *
 
-
 def appStarted(app):
-    app.polygon = Polygon()
-    app.line = Line()
-    app.oval = Oval()
     app.status = 'Polygon'
-    app.actions = [[]]
-    app.history = []
+    app.objects = []
 
 def keyPressed(app, event):
     if event.key == 'l':
@@ -22,71 +17,35 @@ def keyPressed(app, event):
         app.status = 'Oval'
     
     elif event.key == 'w':
-        print(app.history)
+        print(app.objects)
+        
     elif event.key == 'z':
         undo(app)
-    pass
-
-def undo(app):
-    #Edge case of nothing
-    # if app.actions == [[]]:
-    #     return
-    
-    if app.history == []:
-        return
-
-    # action = app.actions[-1]
-    # if action[0] == 'Line':
-    #     app.line.undo()
-    # elif action[0] == 'Polygon':
-    #     app.polygon.undo()
-    # elif action[0] == 'Oval':
-    #     app.oval.undo()
-    
-    last = app.history[-1]
-    if last == 'Line':
-        app.line.undo()
-    elif last == 'Polygon':
-        app.polygon.undo()
-    elif last == 'Oval':
-        app.oval.undo()
-
-    app.history.pop()
 
 def mousePressed(app, event):
-    # #Adds an action to the history (WORKS FOR 2 CLICKS)
-    # if len(app.actions[-1])==2:
-    #     app.actions[-1].append((event.x, event.y))
-    # else:
-    #     app.actions.append([app.status, (event.x, event.y)])
-
-    #Makes objects
-    if app.status == 'Polygon':
-        app.polygon.assignPoint(event.x, event.y)
-        if app.polygon.status == 1:
-            app.history.append('Polygon')
-            
-    elif app.status == 'Line':
-        app.line.assignPoint(event.x, event.y)
-        if app.line.status == 1:
-            app.history.append('Line')
-    
+    if app.status == 'Line':
+        app.objects.append(Line(event.x, event.y))
+    elif app.status == 'Polygon':
+        app.objects.append(Polygon(event.x, event.y))
     elif app.status == 'Oval':
-        app.oval.assignPoint(event.x, event.y)
-        if app.oval.status == 1:
-            app.history.append('Oval')
+        app.objects.append(Oval(event.x, event.y))
 
-def mouseMoved(app, event):
-    if app.status == 'Polygon':
-        app.polygon.currentLocation = (event.x,event.y)
-    elif app.status == 'Line':
-        app.line.currentLocation=(event.x,event.y)
-    elif app.status == 'Oval':
-        app.oval.currentLocation=(event.x,event.y)
+def mouseDragged(app, event):
+    app.objects[-1].currentLocation = (event.x, event.y)
+
+
+def mouseReleased(app, event):
+    if len(app.objects) > 0:
+        app.objects[-1].assignPoints(event.x, event.y)
+
+def undo(app):
+    if app.objects == []:
+        return
+    app.objects.pop()
+
 
 def redrawAll(app, canvas):
-    app.polygon.draw(canvas)
-    app.line.draw(canvas)
-    app.oval.draw(canvas)
+    for object in app.objects:
+        object.draw(canvas)
 
 runApp(width=500,height=500)
