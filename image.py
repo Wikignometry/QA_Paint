@@ -1,5 +1,6 @@
 from cmu_112_graphics import *
 from PIL import Image
+from pyscreenshot import grab
 
 
 class AppImage:
@@ -9,22 +10,23 @@ class AppImage:
         self.currData = list()
         self.action = {"crop": {"ing": False, "done": False, "sPos": tuple(), "dPos": tuple(), "ePos": tuple()},
                        "rotate": {"ing": False},
-                       "brightness": {"ing": False, "done": False, "increase": False, "decrease": False, "ratio": 1.1}}
+                       "brightness": {"ing": False, "done": False, "increase": False, "decrease": False, "ratio": 1.1},
+                       "selectColor": {"ing": False, "done": False, "sPos": tuple(), "sCol": tuple(), "eCol": tuple()}}
 
-    def importImage(self, path: str) -> None:
-        im = Image.open(path)
-        # resized_im = im.resize()
-        self.initData = im
+    def importImage(self, app: TopLevelApp, path: str) -> None:
+        self.initData = Image.open(path).resize((app.width - app.canvasMargin[0], app.height - app.canvasMargin[1]))
         self.currData.append(self.initData)
         self.currIndex += 1
 
-    def exportImage(self, path: str) -> None:
-        self.currData[self.currIndex].save(path)
+    def exportImage(self, app: TopLevelApp, path: str) -> None:
+        cap = grab(bbox=(app.canvasMargin[0] + 10, app.canvasMargin[1] + 35, 500 + 10, 500 + 30))
+        cap.save(path)
 
     def cropImage(self, app, sPos: tuple, ePos: tuple) -> None:
         if self.currData:
-            width, height = self.currData[self.currIndex].size
-            dX, dY = (app.width / 2) - (width / 2), (app.height / 2) - (height / 2)
+            im = self.currData[self.currIndex]
+            dX, dY = (app.canvasMargin[0] + (app.width - app.canvasMargin[0]) / 2 - (im.size[0] / 2),
+                      app.canvasMargin[1] + (app.height - app.canvasMargin[1]) / 2 - (im.size[1] / 2))
             x0, y0 = min(sPos[0], ePos[0]) - dX, min(sPos[1], ePos[1]) - dY
             x1, y1 = max(sPos[0], ePos[0]) - dX, max(sPos[1], ePos[1]) - dY
             # drop previous redo-move after tempIndex
@@ -66,10 +68,9 @@ class AppImage:
 
     def draw(self, app: TopLevelApp, canvas: WrappedCanvas) -> None:
         if self.currData:
-            canvas.create_image(app.width / 2, app.height / 2, image=ImageTk.PhotoImage(self.currData[self.currIndex]))
+            im = self.currData[self.currIndex]
+            canvas.create_image(app.canvasMargin[0] + (app.width - app.canvasMargin[0]) / 2, app.canvasMargin[1] + (app.height - app.canvasMargin[1]) / 2, image=ImageTk.PhotoImage(self.currData[self.currIndex]))
             width, height = self.currData[self.currIndex].size
-            dX, dY = (app.width / 2) - (width / 2), (app.height / 2) - (height / 2)
-            canvas.create_rectangle(dX, dY, dX + width, dY + height, width=1)
         if self.action["crop"]["ing"] and self.action["crop"]["dPos"]:
             self.drawCropRegion(canvas, self.action["crop"]["sPos"], self.action["crop"]["dPos"])
 
@@ -148,4 +149,4 @@ def redrawAll(app, canvas):
     app.image.draw(app, canvas)
 
 
-runApp(width=500, height=500)
+# runApp(width=500, height=500)
