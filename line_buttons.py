@@ -1,8 +1,4 @@
 from button import *
-
-def makeAutoLineValues(app):
-    app.thickness = 2
-    app.lineFill = 'black'
     
 def makeLineButtons(app):
     app.lineButtons = []
