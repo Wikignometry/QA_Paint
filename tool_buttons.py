@@ -11,7 +11,7 @@ def makeToolButtons(app):
                         'undo': initiateUndo}
     y = 100
     x = 30
-    for label in [ 'line', 'polygon', 'oval', 'image', 'drag', 'text']:
+    for label in textButtonActions:
         buttons.append(Button((50,30), location=(x, y), label=label, fill='light grey', action=textButtonActions[label]))
         y += 40
     return buttons
