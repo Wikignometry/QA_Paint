@@ -17,10 +17,12 @@ class AppImage:
     def exportImage(self, path: str) -> None:
         self.tempData[self.tempIndex].save(path)
 
-    def cropImage(self, sPos: tuple, ePos: tuple) -> None:
+    def cropImage(self, app, sPos: tuple, ePos: tuple) -> None:
         if self.tempData:
-            x0, y0 = min(sPos[0], ePos[0]), min(sPos[1], ePos[1])
-            x1, y1 = max(sPos[0], ePos[0]), max(sPos[1], ePos[1])
+            width, height = self.tempData[self.tempIndex].size
+            dX, dY = (app.width / 2) - (width / 2), (app.height / 2) - (height / 2)
+            x0, y0 = min(sPos[0], ePos[0]) - dX, min(sPos[1], ePos[1]) - dY
+            x1, y1 = max(sPos[0], ePos[0]) - dX, max(sPos[1], ePos[1]) - dY
             self.tempData.append(self.tempData[self.tempIndex].crop((x0, y0, x1, y1)))
             self.tempIndex += 1
 
@@ -33,9 +35,9 @@ class AppImage:
         if self.action["crop"]["ing"] and self.action["crop"]["dPos"]:
             self.drawCropRegion(canvas, self.action["crop"]["sPos"], self.action["crop"]["dPos"])
 
-    def update(self):
+    def update(self, app):
         if self.action["crop"]["ing"] and self.action["crop"]["done"]:
-            self.cropImage(self.action["crop"]["sPos"], self.action["crop"]["ePos"])
+            self.cropImage(app, self.action["crop"]["sPos"], self.action["crop"]["ePos"])
             # reset self.action["crop"]
             self.action["crop"].update({"ing": True, "done": False, "sPos": tuple(), "dPos": tuple(), "ePos": tuple()})
 
@@ -78,7 +80,7 @@ def keyPressed(app, event):
 
 
 def timerFired(app):
-    app.image.update()
+    app.image.update(app)
 
 
 def appStarted(app):
