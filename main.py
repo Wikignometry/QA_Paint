@@ -42,6 +42,9 @@ def appStarted(app):
     app.polygonFill=""
     app.polygonOutlineColor="black"
     app.polygonSides=4
+    app.ovalThickness=2
+    app.ovalFill=""
+    app.ovalOutline="black"
 
 def keyPressed(app, event):
     if event.key == 'l':
@@ -94,7 +97,7 @@ def mousePressed(app, event):
         app.objects.append(Polygon(event.x, event.y,app.polygonSides, app.polygonOutlineThickness, app.polygonOutlineColor, app.polygonFill))
 
     elif app.status == 'Oval':
-        app.objects.append(Oval(event.x, event.y))
+        app.objects.append(Oval(event.x, event.y,app.ovalThickness,app.ovalOutline,app.ovalFill))
 
     elif app.status == 'Crop':
         if app.image.action["crop"]["ing"]:

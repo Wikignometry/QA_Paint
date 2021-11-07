@@ -16,7 +16,7 @@ def getOvalThickness(app):
     app.ovalThickness = int(app.getUserInput('input your oval thickness here'))
 
 def getOvalFill(app):
-    app.ovalFill = app.userInput('input your oval color here')
+    app.ovalFill = app.getUserInput('input your oval color here')
 
 def getOvalOutline(app):
-    app.ovalOutline = app.userInput('input your oval outline color here')
+    app.ovalOutline = app.getUserInput('input your oval outline color here')
