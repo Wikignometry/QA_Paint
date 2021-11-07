@@ -1,4 +1,4 @@
-from  button import *
+from button import *
 
 def makeImageButtons(app):
     buttons = []
@@ -12,7 +12,12 @@ def makeImageButtons(app):
         buttons.append(Button((80,30), location=(x, y), 
         label=label, fill='powder blue', action=imageButtonActions[label]))
         x += 90
+    # buttons.append(Button((50,30), location=(30, 420), 
+    #     label='redo', fill='light grey', action=redoImage))
     return buttons
+
+# def redoImage(app):
+#     app.image.redo()
 
 def getImage(app):
     filePath = filedialog.askopenfilename(initialfile="import-image", defaultextension=".jpg", )
