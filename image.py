@@ -62,6 +62,9 @@ class AppImage:
     def draw(self, app: TopLevelApp, canvas: WrappedCanvas) -> None:
         if self.currData:
             canvas.create_image(app.width / 2, app.height / 2, image=ImageTk.PhotoImage(self.currData[self.currIndex]))
+            width, height = self.currData[self.currIndex].size
+            dX, dY = (app.width / 2) - (width / 2), (app.height / 2) - (height / 2)
+            canvas.create_rectangle(dX, dY, dX + width, dY + height, width=1)
         if self.action["crop"]["ing"] and self.action["crop"]["dPos"]:
             self.drawCropRegion(canvas, self.action["crop"]["sPos"], self.action["crop"]["dPos"])
 
@@ -140,4 +143,4 @@ def redrawAll(app, canvas):
     app.image.draw(app, canvas)
 
 
-# runApp(width=500, height=500)
+runApp(width=1920, height=1080)
