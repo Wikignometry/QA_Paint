@@ -1,7 +1,7 @@
 #           Imported Functions
 
 from cmu_112_graphics import *
-from helpers import *
+from button import *
 ################################################################################
 
 
@@ -49,9 +49,10 @@ def makeAutoTextValues(app):
 def getText(app, event):
     text = app.getUserInput('input your text here')
     if text != None:
+        print(app.size)
         app.objects.append(Text(str(text), (event.x, event.y), 
                         fill=app.textFill, 
-                        font=(app.font, app.size, app.style), 
+                        font=app.font, size=app.size, style=app.style, 
                         anchor=app.anchor, 
                         justify=app.justify
                         ))
@@ -72,11 +73,7 @@ def getJustify(app):
     app.justify = app.getUserInput('input left, right or center here')
 
 def getStyle(app):
-    app.style = app.getUserInput('input roman or italics here')
-
-
-
-
+    app.style = app.getUserInput('input roman, italics, bold, or underline here')
 
 ################################################################################
 #               test functions
@@ -87,10 +84,12 @@ def appStarted(app):
     app.objects = [ ]
 
 def mousePressed(app, event):
-    getText(app, event)
     for button in app.textButtons:
-        if button.isPressed():
+        if button.isPressed(event.x, event.y):
             button.action(app)
+            return
+    getText(app, event)
+
 
 def redrawAll(app, canvas):
     for button in app.textButtons:
