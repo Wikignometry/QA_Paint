@@ -18,7 +18,7 @@ class Text():
         self.anchor = anchor
         self.style = style
 
-    def draw(self, canvas):
+    def draw(self, app, canvas):
         canvas.create_text(self.x, self.y, 
                     text=f'{self.text}', 
                     font = (self.font, self.size, self.style),
@@ -30,12 +30,14 @@ class Text():
 #####
 
 def makeTextButtons(app):
+    buttons = []
     textButtonActions = {'color': getTextFill, 'font': getFont, 'size': getSize, 'anchor': getAnchor, 'justify': getJustify, 'style': getStyle}
     y = 50
     x = 30
     for label in [ 'color', 'font', 'size', 'anchor', 'justify', 'style']:
-        app.buttons.append(Button((50,30), location=(x, y), label=label, fill='light grey', action=textButtonActions[label]))
+        buttons.append(Button((50,30), location=(x, y), label=label, fill='light grey', action=textButtonActions[label]))
         x += 60
+    return buttons
 
 def makeAutoTextValues(app):
     app.font = 'Calbri'
@@ -48,7 +50,6 @@ def makeAutoTextValues(app):
 def getText(app, event):
     text = app.getUserInput('input your text here')
     if text != None:
-        print(app.size)
         app.objects.append(Text(str(text), (event.x, event.y), 
                         fill=app.textFill, 
                         font=app.font, size=app.size, style=app.style, 

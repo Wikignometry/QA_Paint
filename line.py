@@ -6,6 +6,8 @@ class Line():
         self.w0, self.w1, self.h0, self.h1 = (0, 0, 0, 0)
         self.width = 3
         self.fill = 'black'
+        self.style = ''
+        
     
     def __repr__(self):
         return f'Line({self.points[0]}, {self.points[-1]})'

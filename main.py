@@ -5,6 +5,9 @@ from line import *
 from oval import *
 from helpers import *
 from image import *
+from tool_buttons import *
+from line_buttons import *
+from button import *
 
 def appStarted(app):
     app.status = 'Line'
@@ -12,11 +15,21 @@ def appStarted(app):
     app.objects = []
     app.currentObject = None
 
-    makeTextButtons(app)
+    app.buttons = dict()
+
+    app.buttons['Tools']= makeToolButtons(app)
+
     makeAutoTextValues(app)
     # create a bunch of top level attributes
 
-    app.buttons = []
+    app.buttons['Line'] = makeLineButtons(app)
+    app.buttons['Polygon'] = []
+    app.buttons['Oval'] = []
+    app.buttons['Crop'] = []
+    app.buttons['Drag'] = []
+    app.buttons['Text'] = makeTextButtons(app)
+
+    
 
 
 def keyPressed(app, event):
@@ -54,9 +67,14 @@ def keyPressed(app, event):
         undo(app)
 
 def mousePressed(app, event):
-    for button in app.buttons:
+    for button in app.buttons['Tools']:
         if button.isPressed(event.x, event.y):
             button.action(app)
+            return
+    for button in app.buttons[app.status]:
+        if button.isPressed(event.x, event.y):
+            button.action(app)
+            return
 
     if app.status == 'Line':
         app.objects.append(Line(event.x, event.y))
@@ -80,6 +98,9 @@ def mousePressed(app, event):
             if minX < event.x < maxX and minY < event.y < maxY:
                 app.currentObject = object
                 object.moveHelper(event.x, event.y)
+
+    elif app.status == 'Text':
+        getText(app, event)
 
 def mouseDragged(app, event):
     if app.status == 'Line' or app.status == 'Polygon' or app.status == 'Oval':
@@ -116,7 +137,9 @@ def redrawAll(app, canvas):
     app.image.draw(app, canvas)
     for object in app.objects:
         object.draw(app, canvas)
-    for button in app.buttons:
+    for button in app.buttons['Tools']:
+        button.draw(canvas)
+    for button in app.buttons[app.status]:
         button.draw(canvas)
 
 runApp(width=500,height=500)

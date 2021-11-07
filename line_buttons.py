@@ -1,15 +1,19 @@
 from button import *
-
-def makeAutoLineValues(app):
-    app.thickness = 2
-    app.lineFill = 'black'
     
 def makeLineButtons(app):
-    app.lineButtons = []
-    lineButtonActions={'thickness':getThickness, 'lineFill': getLineFill}
-    
-def getThickness(app):
-    app.thickness = app.getUserInput('input your line thickness here')
+    buttons = []
+    lineButtonActions={'thickness':getLineThickness, 
+                        'color': getLineFill}
+    y = 50
+    x = 100
+    for label in lineButtonActions:
+        buttons.append(Button((50,30), location=(x, y), 
+        label=label, fill='light grey', action=lineButtonActions[label]))
+        x += 60
+    return buttons
+
+def getLineThickness(app):
+    app.lineThickness = int(app.getUserInput('input your line thickness here'))
 
 def getLineFill(app):
     app.lineFill = app.getUserInput('input your line color here')
