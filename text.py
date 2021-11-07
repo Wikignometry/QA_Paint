@@ -1,7 +1,7 @@
 #           Imported Functions
 
 from cmu_112_graphics import *
-
+from helpers import *
 ################################################################################
 
 
@@ -18,10 +18,6 @@ class Text():
         self.anchor = anchor
         self.style = style
 
-    def drawTextBox(self, canvas, event):
-        entry = Entry(canvas, textvariable = self.text)
-        entry.place(x=event.x)
-
     def draw(self, canvas):
         canvas.create_text(self.x, self.y, 
                     text=f'{self.text}', 
@@ -30,18 +26,74 @@ class Text():
                     justify=self.justify, 
                     fill=self.fill)
 
+
+#####
+
+def makeTextButtons(app):
+    app.textButtons = []
+    textButtonActions = {'color': getTextFill, 'font': getFont, 'size': getSize, 'anchor': getAnchor, 'justify': getJustify, 'style': getStyle}
+    y = 100
+    x = 30
+    for label in [ 'color', 'font', 'size', 'anchor', 'justify', 'style']:
+        app.textButtons.append(Button((50,30), location=(x, y), label=label, fill='light grey', action=textButtonActions[label]))
+        x += 60
+
+def makeAutoTextValues(app):
+    app.font = 'Calbri'
+    app.textFill = 'black'
+    app.size = '12'
+    app.anchor = 'center'
+    app.justify = 'center'
+    app.style = 'roman'
+
+def getText(app, event):
+    text = app.getUserInput('input your text here')
+    if text != None:
+        app.objects.append(Text(str(text), (event.x, event.y), 
+                        fill=app.textFill, 
+                        font=(app.font, app.size, app.style), 
+                        anchor=app.anchor, 
+                        justify=app.justify
+                        ))
+
+def getFont(app):
+    app.font = app.getUserInput('input your font family here')
+
+def getTextFill(app):
+    app.textFill = app.getUserInput('input your color here')
+
+def getSize(app):
+    app.size = app.getUserInput('input your font size here')
+
+def getAnchor(app):
+    app.anchor = app.getUserInput('input your color here')
+
+def getJustify(app):
+    app.justify = app.getUserInput('input left, right or center here')
+
+def getStyle(app):
+    app.style = app.getUserInput('input roman or italics here')
+
+
+
+
+
 ################################################################################
 #               test functions
 
 def appStarted(app):
-    app.text = Text('I am a text', (app.height//2, app.width//2), fill='blue', font='Calbri', size=50)
+    makeAutoTextValues(app)
+    makeTextButtons(app)
+    app.objects = [ ]
 
-def mousePressed(app):
-    app.text.drawTextBox(canvas)
-
+def mousePressed(app, event):
+    getText(app, event)
 
 def redrawAll(app, canvas):
-    app.text.draw(canvas)
+    for button in app.textButtons:
+        button.draw(canvas)
+    for object in app.objects:
+        object.draw(canvas)
 
 
 runApp(width=500, height=500)

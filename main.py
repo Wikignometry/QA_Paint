@@ -1,12 +1,15 @@
 from cmu_112_graphics import *
-
 from polygon import *
 from line import *
 from oval import *
+from helpers import *
 
 def appStarted(app):
     app.status = 'Polygon'
     app.objects = []
+    makeTextButtons(app)
+    makeAutoTextValues(app)
+
 
 def keyPressed(app, event):
     if event.key == 'l':
@@ -15,7 +18,8 @@ def keyPressed(app, event):
         app.status = 'Polygon'
     elif event.key == 'o':
         app.status = 'Oval'
-    
+    elif event.key == 't':
+        app.status = 'Text'
     elif event.key == 'w':
         print(app.objects)
         
@@ -23,6 +27,8 @@ def keyPressed(app, event):
         undo(app)
 
 def mousePressed(app, event):
+    if app.status == 'Text':
+        getText(app, event.x, event.y)
     if app.status == 'Line':
         app.objects.append(Line(event.x, event.y))
     elif app.status == 'Polygon':
@@ -45,6 +51,8 @@ def undo(app):
 
 
 def redrawAll(app, canvas):
+    for button in app.textButtons:
+        button.draw(canvas)
     for object in app.objects:
         object.draw(canvas)
 
