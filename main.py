@@ -10,16 +10,15 @@ from line_buttons import *
 from ngons_buttons import *
 from oval_buttons import *
 from image_buttons import *
-
+from pen import *
 from button import *
-from polygon_buttons import *
 
 def appStarted(app):
     app.status = 'Line'
     app.image = AppImage()
     app.objects = []
     app.currentObject = None
-    
+
     app.buttons = dict()
 
     app.buttons['Tools']= makeToolButtons(app)
@@ -35,6 +34,7 @@ def appStarted(app):
     app.buttons['Crop'] = makeImageButtons(app)
     app.buttons['Drag'] = []
     app.buttons['Text'] = makeTextButtons(app)
+    app.buttons['Pen']= makeLineButtons(app)
 
 
     app.lineThickness=2
@@ -59,7 +59,7 @@ def keyPressed(app, event):
     elif event.key == 'd':
         app.status = 'Drag'
     elif event.key == 't':
-        app.status = 'Text'
+        app.status = 'Pen'
 
     # https://pythonspot.com/tk-file-dialogs/
     if event.key == "control-o":
@@ -73,11 +73,6 @@ def keyPressed(app, event):
         app.image.undo()
     if event.key == "control-r":
         app.image.redo()
-    
-
-    elif event.key == 'w':
-        print(app.objects)
-        
     elif event.key == 'z':
         undo(app)
 
@@ -103,7 +98,10 @@ def mousePressed(app, event):
     elif app.status == 'Crop':
         if app.image.action["crop"]["ing"]:
             app.image.action["crop"]["sPos"] = (event.x, event.y)
-    
+
+    elif app.status == 'Pen':
+        app.objects.append(Pen(event.x,event.y, app.lineThickness, app.lineFill))
+
     elif app.status == 'Drag':
         for object in app.objects:
             x0, y0 = object.points[0]
@@ -121,11 +119,12 @@ def mouseDragged(app, event):
     if app.status == 'Line' or app.status == 'Polygon' or app.status == 'Oval':
         if app.objects != []:
             app.objects[-1].currentLocation = (event.x, event.y)
-    
+    elif app.status == 'Pen':
+        if app.objects != []:
+            app.objects[-1].assignPoints(event.x,event.y)
     elif app.status == 'Crop':
         if app.image.action["crop"]["ing"]:
-            app.image.action["crop"]["dPos"] = (event.x, event.y) 
-    
+            app.image.action["crop"]["dPos"] = (event.x, event.y)
     elif app.status == 'Drag':
         app.currentObject.move(event.x, event.y)
 
@@ -134,7 +133,7 @@ def mouseReleased(app, event):
     if app.status == 'Line' or app.status == 'Polygon' or app.status == 'Oval':
         if len(app.objects) > 0:
             app.objects[-1].assignPoints(event.x, event.y)
-    
+
     elif app.status == 'Crop':
         if app.image.action["crop"]["ing"]:
             app.image.action["crop"]["ePos"] = (event.x, event.y)
