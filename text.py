@@ -32,7 +32,7 @@ class Text():
 def makeTextButtons(app):
     app.textButtons = []
     textButtonActions = {'color': getTextFill, 'font': getFont, 'size': getSize, 'anchor': getAnchor, 'justify': getJustify, 'style': getStyle}
-    y = 100
+    y = 50
     x = 30
     for label in [ 'color', 'font', 'size', 'anchor', 'justify', 'style']:
         app.textButtons.append(Button((50,30), location=(x, y), label=label, fill='light grey', action=textButtonActions[label]))
@@ -88,6 +88,9 @@ def appStarted(app):
 
 def mousePressed(app, event):
     getText(app, event)
+    for button in app.textButtons:
+        if button.isPressed():
+            button.action(app)
 
 def redrawAll(app, canvas):
     for button in app.textButtons:
