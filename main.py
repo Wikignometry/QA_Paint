@@ -8,6 +8,7 @@ from image import *
 from tool_buttons import *
 from line_buttons import *
 from button import *
+from polygon_buttons import *
 
 def appStarted(app):
     app.status = 'Line'
@@ -23,14 +24,18 @@ def appStarted(app):
     # create a bunch of top level attributes
 
     app.buttons['Line'] = makeLineButtons(app)
-    app.buttons['Polygon'] = []
+    app.buttons['Polygon'] = makePolygonButtons(app)
     app.buttons['Oval'] = []
     app.buttons['Crop'] = []
     app.buttons['Drag'] = []
     app.buttons['Text'] = makeTextButtons(app)
-    
+
+
     app.lineThickness=2
     app.lineFill="black"
+    app.polygonOutlineThickness=2
+    app.polygonFill=""
+    app.polygonOutlineColor="black"
 
 def keyPressed(app, event):
     if event.key == 'l':
@@ -80,7 +85,7 @@ def mousePressed(app, event):
         app.objects.append(Line(event.x, event.y,app.lineThickness,app.lineFill))
 
     elif app.status == 'Polygon':
-        app.objects.append(Polygon(event.x, event.y))
+        app.objects.append(Polygon(event.x, event.y, app.polygonOutlineThickness, app.polygonOutlineColor, app.polygonFill))
 
     elif app.status == 'Oval':
         app.objects.append(Oval(event.x, event.y))

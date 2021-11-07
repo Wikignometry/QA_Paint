@@ -1,12 +1,12 @@
 class Polygon():
-    def __init__(self, x, y):
+    def __init__(self, x, y,outlineThickness,outlineColor,fill):
         self.points = [(x, y)]
         self.status = 0
         self.currentLocation = (x, y)
         self.w0, self.w1, self.h0, self.h1 = (0, 0, 0, 0)
-        self.width = 3
-        self.fill = ''
-        self.outline = 'black'
+        self.width = outlineThickness
+        self.fill = fill
+        self.outline = outlineColor
     
     def __repr__(self):
         return f'Polygon({self.points[0]}, {self.points[-1]})'
