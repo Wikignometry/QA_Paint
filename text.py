@@ -18,6 +18,10 @@ class Text():
         self.anchor = anchor
         self.style = style
 
+    def drawTextBox(self, canvas, event):
+        entry = Entry(canvas, textvariable = self.text)
+        entry.place(x=event.x)
+
     def draw(self, canvas):
         canvas.create_text(self.x, self.y, 
                     text=f'{self.text}', 
@@ -32,6 +36,8 @@ class Text():
 def appStarted(app):
     app.text = Text('I am a text', (app.height//2, app.width//2), fill='blue', font='Calbri', size=50)
 
+def mousePressed(app):
+    app.text.drawTextBox(canvas)
 
 
 def redrawAll(app, canvas):
