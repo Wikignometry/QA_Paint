@@ -11,8 +11,8 @@ class AppImage:
                        "rotate": {"ing": False},
                        "brightness": {"ing": False, "done": False, "increase": False, "decrease": False, "ratio": 1.1}}
 
-    def importImage(self, path: str) -> None:
-        self.initData = Image.open(path).resize((400, 400))
+    def importImage(self, app: TopLevelApp, path: str) -> None:
+        self.initData = Image.open(path).resize((app.width - app.canvasMargin[0], app.height - app.canvasMargin[1]))
         self.currData.append(self.initData)
         self.currIndex += 1
 
@@ -21,8 +21,9 @@ class AppImage:
 
     def cropImage(self, app, sPos: tuple, ePos: tuple) -> None:
         if self.currData:
-            width, height = self.currData[self.currIndex].size
-            dX, dY = 300 - (width / 2), 300 - (height / 2)
+            im = self.currData[self.currIndex]
+            dX, dY = (app.canvasMargin[0] + (app.width - app.canvasMargin[0]) / 2 - (im.size[0] / 2),
+                      app.canvasMargin[1] + (app.height - app.canvasMargin[1]) / 2 - (im.size[1] / 2))
             x0, y0 = min(sPos[0], ePos[0]) - dX, min(sPos[1], ePos[1]) - dY
             x1, y1 = max(sPos[0], ePos[0]) - dX, max(sPos[1], ePos[1]) - dY
             # drop previous redo-move after tempIndex
@@ -64,10 +65,9 @@ class AppImage:
 
     def draw(self, app: TopLevelApp, canvas: WrappedCanvas) -> None:
         if self.currData:
-            canvas.create_image(300, 300, image=ImageTk.PhotoImage(self.currData[self.currIndex]))
+            im = self.currData[self.currIndex]
+            canvas.create_image(app.canvasMargin[0] + (app.width - app.canvasMargin[0]) / 2, app.canvasMargin[1] + (app.height - app.canvasMargin[1]) / 2, image=ImageTk.PhotoImage(self.currData[self.currIndex]))
             width, height = self.currData[self.currIndex].size
-            dX, dY = 300 - (width / 2), 300 - (height / 2)
-            # canvas.create_rectangle(dX, dY, dX + width, dY + height, width=1)
         if self.action["crop"]["ing"] and self.action["crop"]["dPos"]:
             self.drawCropRegion(canvas, self.action["crop"]["sPos"], self.action["crop"]["dPos"])
 
@@ -89,61 +89,61 @@ class AppImage:
         if -1 < self.currIndex < len(self.currData) - 1 and self.currData: self.currIndex += 1
 
 
-# def mousePressed(app, event):
-#     if app.image.action["crop"]["ing"]:
-#         app.image.action["crop"]["sPos"] = (event.x, event.y)
+def mousePressed(app, event):
+    if app.image.action["crop"]["ing"]:
+        app.image.action["crop"]["sPos"] = (event.x, event.y)
 
 
-# def mouseDragged(app, event):
-#     if app.image.action["crop"]["ing"]:
-#         app.image.action["crop"]["dPos"] = (event.x, event.y)
+def mouseDragged(app, event):
+    if app.image.action["crop"]["ing"]:
+        app.image.action["crop"]["dPos"] = (event.x, event.y)
 
 
-# def mouseReleased(app, event):
-#     if app.image.action["crop"]["ing"]:
-#         app.image.action["crop"]["ePos"] = (event.x, event.y)
-#         app.image.action["crop"]["done"] = True
+def mouseReleased(app, event):
+    if app.image.action["crop"]["ing"]:
+        app.image.action["crop"]["ePos"] = (event.x, event.y)
+        app.image.action["crop"]["done"] = True
 
 
-# def keyPressed(app, event):
-#     # https://pythonspot.com/tk-file-dialogs/
-#     if event.key == "control-o":
-#         filePath = filedialog.askopenfilename(initialfile="import-image", defaultextension=".jpg", )
-#         if filePath: app.image.importImage(path=filePath)
-#     if event.key == "control-s" and app.image.tempData:
-#         filePath = filedialog.asksaveasfilename(initialfile="export-image", defaultextension=".jpg",
-#                                                 filetypes=[("ImageFile", ".jpg")])
-#         if filePath: app.image.exportImage(path=filePath)
-#     if event.key == "control-z":
-#         app.image.undo()
-#     if event.key == "control-r":
-#         app.image.redo()
-#     if event.key == "r":
-#         app.image.action["rotate"]["ing"] = True
-#     if event.key == "c":
-#         app.image.action["crop"]["ing"] = True
-#     if event.key == "b":
-#         app.image.action["brightness"]["ing"] = True
-#     if event.key == "Up":
-#         if app.image.action["brightness"]["ing"]:
-#             app.image.action["brightness"]["increase"] = True
-#             app.image.action["brightness"]["done"] = True
-#     if event.key == "Down":
-#         if app.image.action["brightness"]["ing"]:
-#             app.image.action["brightness"]["decrease"] = True
-#             app.image.action["brightness"]["done"] = True
+def keyPressed(app, event):
+    # https://pythonspot.com/tk-file-dialogs/
+    if event.key == "control-o":
+        filePath = filedialog.askopenfilename(initialfile="import-image", defaultextension=".jpg", )
+        if filePath: app.image.importImage(path=filePath)
+    if event.key == "control-s" and app.image.tempData:
+        filePath = filedialog.asksaveasfilename(initialfile="export-image", defaultextension=".jpg",
+                                                filetypes=[("ImageFile", ".jpg")])
+        if filePath: app.image.exportImage(path=filePath)
+    if event.key == "control-z":
+        app.image.undo()
+    if event.key == "control-r":
+        app.image.redo()
+    if event.key == "r":
+        app.image.action["rotate"]["ing"] = True
+    if event.key == "c":
+        app.image.action["crop"]["ing"] = True
+    if event.key == "b":
+        app.image.action["brightness"]["ing"] = True
+    if event.key == "Up":
+        if app.image.action["brightness"]["ing"]:
+            app.image.action["brightness"]["increase"] = True
+            app.image.action["brightness"]["done"] = True
+    if event.key == "Down":
+        if app.image.action["brightness"]["ing"]:
+            app.image.action["brightness"]["decrease"] = True
+            app.image.action["brightness"]["done"] = True
 
 
-# def timerFired(app):
-#     app.image.update(app)
+def timerFired(app):
+    app.image.update(app)
 
 
-# def appStarted(app):
-#     app.image = AppImage()
+def appStarted(app):
+    app.image = AppImage()
 
 
-# def redrawAll(app, canvas):
-#     app.image.draw(app, canvas)
+def redrawAll(app, canvas):
+    app.image.draw(app, canvas)
 
 
 # runApp(width=500, height=500)

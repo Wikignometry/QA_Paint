@@ -18,7 +18,7 @@ def appStarted(app):
     app.image = AppImage()
     app.objects = []
     app.currentObject = None
-    app.canvasMargin = (70, 85)
+    app.canvasMargin = (70, 60)
     app.buttons = dict()
 
     app.buttons['Tools']= makeToolButtons(app)
@@ -64,7 +64,7 @@ def keyPressed(app, event):
     # https://pythonspot.com/tk-file-dialogs/
     if event.key == "control-o":
         filePath = filedialog.askopenfilename(initialfile="import-image", defaultextension=".jpg", )
-        if filePath: app.image.importImage(path=filePath)
+        if filePath: app.image.importImage(app, path=filePath)
     if event.key == "control-s" and app.image.currData:
         filePath = filedialog.asksaveasfilename(initialfile="export-image", defaultextension=".jpg",
                                                 filetypes=[("ImageFile", ".jpg")])
@@ -153,7 +153,7 @@ def redrawAll(app, canvas):
     app.image.draw(app, canvas)
     for object in app.objects:
         object.draw(app, canvas)
-    canvas.create_rectangle(app.canvasMargin[0], app.canvasMargin[1], app.width-5, app.height-5, width=3)
+    canvas.create_rectangle(app.canvasMargin[0], app.canvasMargin[1], app.width, app.height, width=3)
     for button in app.buttons['Tools']:
         button.draw(canvas)
     for button in app.buttons[app.status]:

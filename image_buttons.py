@@ -16,7 +16,7 @@ def makeImageButtons(app):
 
 def getImage(app):
     filePath = filedialog.askopenfilename(initialfile="import-image", defaultextension=".jpg", )
-    if filePath: app.image.importImage(path=filePath)
+    if filePath: app.image.importImage(app, path=filePath)
 
 def initiateCrop(app):
     app.status = 'Crop'
