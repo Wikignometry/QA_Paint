@@ -7,7 +7,10 @@ from helpers import *
 from image import *
 from tool_buttons import *
 from line_buttons import *
-from button import *
+from ngons_buttons import *
+from oval_buttons import *
+from image_buttons import *
+
 
 def appStarted(app):
     app.status = 'Line'
@@ -23,9 +26,10 @@ def appStarted(app):
     # create a bunch of top level attributes
 
     app.buttons['Line'] = makeLineButtons(app)
-    app.buttons['Polygon'] = []
-    app.buttons['Oval'] = []
-    app.buttons['Crop'] = []
+    app.buttons['Polygon'] = makeNGonButtons(app)
+    app.buttons['Oval'] = makeOvalButtons(app)
+    app.buttons['Image'] = makeImageButtons(app)
+    app.buttons['Crop'] = makeImageButtons(app)
     app.buttons['Drag'] = []
     app.buttons['Text'] = makeTextButtons(app)
 
@@ -39,8 +43,8 @@ def keyPressed(app, event):
         app.status = 'Polygon'
     elif event.key == 'o':
         app.status = 'Oval'
-    elif event.key == 'c':
-        app.status = 'Crop'
+    elif event.key == 'i':
+        app.status = 'Image'
     elif event.key == 'd':
         app.status = 'Drag'
     elif event.key == 't':
@@ -104,7 +108,8 @@ def mousePressed(app, event):
 
 def mouseDragged(app, event):
     if app.status == 'Line' or app.status == 'Polygon' or app.status == 'Oval':
-        app.objects[-1].currentLocation = (event.x, event.y)
+        if app.objects != []:
+            app.objects[-1].currentLocation = (event.x, event.y)
     
     elif app.status == 'Crop':
         if app.image.action["crop"]["ing"]:
