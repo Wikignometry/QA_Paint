@@ -5,29 +5,31 @@ from PIL import Image
 class AppImage:
     def __init__(self):
         self.initData = None
-        self.tempData = None
+        self.tempIndex = -1
+        self.tempData = list()
         self.action = {"crop": {"ing": True, "done": False, "sPos": tuple(), "dPos": tuple(), "ePos": tuple()}}
 
     def importImage(self, path: str) -> None:
         self.initData = Image.open(path)
-        self.tempData = ImageTk.PhotoImage(self.initData)
+        self.tempData.append(self.initData)
+        self.tempIndex += 1
 
     def exportImage(self, path: str) -> None:
-        self.initData.save(path)
+        self.tempData[self.tempIndex].save(path)
 
     def cropImage(self, sPos: tuple, ePos: tuple) -> None:
         if self.tempData:
             x0, y0 = min(sPos[0], ePos[0]), min(sPos[1], ePos[1])
             x1, y1 = max(sPos[0], ePos[0]), max(sPos[1], ePos[1])
-            self.initData = self.initData.crop((x0, y0, x1, y1))
+            self.tempData.append(self.tempData[self.tempIndex].crop((x0, y0, x1, y1)))
+            self.tempIndex += 1
 
     def drawCropRegion(self, canvas, sPos: tuple, ePos: tuple) -> None:
         canvas.create_rectangle(sPos[0], sPos[1], ePos[0], ePos[1], width=1)
 
     def draw(self, app: TopLevelApp, canvas: WrappedCanvas) -> None:
-        if self.initData:
-            self.tempData = ImageTk.PhotoImage(self.initData)
-            canvas.create_image(app.width / 2, app.height / 2, image=self.tempData)
+        if self.tempData:
+            canvas.create_image(app.width / 2, app.height / 2, image=ImageTk.PhotoImage(self.tempData[self.tempIndex]))
         if self.action["crop"]["ing"] and self.action["crop"]["dPos"]:
             self.drawCropRegion(canvas, self.action["crop"]["sPos"], self.action["crop"]["dPos"])
 
@@ -36,6 +38,12 @@ class AppImage:
             self.cropImage(self.action["crop"]["sPos"], self.action["crop"]["ePos"])
             # reset self.action["crop"]
             self.action["crop"].update({"ing": True, "done": False, "sPos": tuple(), "dPos": tuple(), "ePos": tuple()})
+
+    def undo(self):
+        if self.tempIndex > -1: self.tempIndex -= 1
+
+    def redo(self):
+        if -1 < self.tempIndex < len(self.tempData) - 1 and self.tempData: self.tempIndex += 1
 
 
 def mousePressed(app, event):
@@ -63,6 +71,10 @@ def keyPressed(app, event):
         filePath = filedialog.asksaveasfilename(initialfile="export-image", defaultextension=".jpg",
                                                 filetypes=[("ImageFile", ".jpg")])
         if filePath: app.image.exportImage(path=filePath)
+    if event.key == "control-z":
+        app.image.undo()
+    if event.key == "control-r":
+        app.image.redo()
 
 
 def timerFired(app):
