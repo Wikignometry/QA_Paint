@@ -136,7 +136,8 @@ def mouseDragged(app, event):
         if app.image.action["crop"]["ing"]:
             app.image.action["crop"]["dPos"] = (event.x, event.y)
     elif app.status == 'Drag':
-        app.currentObject.move(event.x, event.y)
+        if app.currentObject != None:
+            app.currentObject.move(event.x, event.y)
 
 
 def mouseReleased(app, event):
@@ -152,6 +153,9 @@ def mouseReleased(app, event):
         if app.image.action["crop"]["ing"]:
             app.image.action["crop"]["ePos"] = (event.x, event.y)
             app.image.action["crop"]["done"] = True
+
+    elif app.status == 'Drag':
+        app.currentObject = None
 
 def timerFired(app):
     app.image.update(app)
