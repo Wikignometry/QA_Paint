@@ -99,11 +99,11 @@ def undo(app):
     app.objects.pop()
 
 def timerFired(app):
-    # app.image.update()
+    app.image.update(app)
     pass
 
 def redrawAll(app, canvas):
-    # app.image.draw(app, canvas)
+    app.image.draw(app, canvas)
     for object in app.objects:
         object.draw(app, canvas)
 
