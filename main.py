@@ -65,7 +65,7 @@ def keyPressed(app, event):
     if event.key == "control-o":
         filePath = filedialog.askopenfilename(initialfile="import-image", defaultextension=".jpg", )
         if filePath: app.image.importImage(path=filePath)
-    if event.key == "control-s" and app.image.tempData:
+    if event.key == "control-s" and app.image.currData:
         filePath = filedialog.asksaveasfilename(initialfile="export-image", defaultextension=".jpg",
                                                 filetypes=[("ImageFile", ".jpg")])
         if filePath: app.image.exportImage(path=filePath)
@@ -145,11 +145,6 @@ def mouseReleased(app, event):
             app.image.action["crop"]["ePos"] = (event.x, event.y)
             app.image.action["crop"]["done"] = True
 
-# def undo(app):
-#     if app.objects == []:
-#         return
-#     app.objects.pop()
-
 def timerFired(app):
     app.image.update(app)
     pass
@@ -158,6 +153,7 @@ def redrawAll(app, canvas):
     app.image.draw(app, canvas)
     for object in app.objects:
         object.draw(app, canvas)
+    canvas.create_rectangle(70, 85, app.width-5, app.height-5, width=3)
     for button in app.buttons['Tools']:
         button.draw(canvas)
     for button in app.buttons[app.status]:

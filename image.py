@@ -10,8 +10,11 @@ class AppImage:
         self.action = {"crop": {"ing": False, "done": False, "sPos": tuple(), "dPos": tuple(), "ePos": tuple()},
                        "rotate": {"ing": False},
                        "brightness": {"ing": False, "done": False, "increase": False, "decrease": False, "ratio": 1.1}}
+
     def importImage(self, path: str) -> None:
-        self.initData = Image.open(path)
+        im = Image.open(path)
+        # resized_im = im.resize()
+        self.initData = im
         self.currData.append(self.initData)
         self.currIndex += 1
 
@@ -145,4 +148,4 @@ class AppImage:
 #     app.image.draw(app, canvas)
 
 
-# runApp(width=1920, height=1080)
+runApp(width=500, height=500)

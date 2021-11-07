@@ -17,6 +17,9 @@ class Text():
         self.justify = justify
         self.anchor = anchor
         self.style = style
+        self.points = []
+        self.pointMaker()
+
 
     def draw(self, app, canvas):
         canvas.create_text(self.x, self.y, 
@@ -25,6 +28,33 @@ class Text():
                     anchor=self.anchor, 
                     justify=self.justify, 
                     fill=self.fill)
+    
+    def pointMaker(self):
+        self.intSize = int(self.size)
+        y0, y1 = self.y-self.intSize , self.y+self.intSize 
+        x0, x1 = self.x-self.intSize *(len(self.text)/2), self.x+self.intSize *(len(self.text)/2)
+        self.points.append((x0, y0))
+        self.points.append((x1, y1))
+
+    def moveHelper(self, x, y):
+        x0, y0 = self.points[0]
+        x1, y1 = self.points[1]
+
+        self.w0 = x - x0
+        self.h0 = y - y0
+        self.w1 = x1 - x
+        self.h1 = y1 - y
+
+    def move(self, newX, newY):
+        nx0, ny0 = newX - self.w0, newY - self.h0
+        nx1, ny1 = newX + self.w1, newY + self.h1
+
+        self.points[0] = (nx0, ny0)
+        self.points[1] = (nx1, ny1)
+
+        self.x = nx0 + self.intSize *(len(self.text)/2)
+        self.y = ny0 + self.intSize 
+
 
 
 #####
