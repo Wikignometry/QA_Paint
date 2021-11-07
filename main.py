@@ -116,7 +116,7 @@ def mousePressed(app, event):
         getText(app, event)
 
 def mouseDragged(app, event):
-    if app.status == 'Line' or app.status == 'Polygon' or app.status == 'Oval' or app.status == 'Text':
+    if app.status == 'Line' or app.status == 'Polygon' or app.status == 'Oval':
         if app.objects != []:
             app.objects[-1].currentLocation = (event.x, event.y)
     elif app.status == 'Pen':
@@ -130,7 +130,7 @@ def mouseDragged(app, event):
 
 
 def mouseReleased(app, event):
-    if app.status == 'Line' or app.status == 'Polygon' or app.status == 'Oval' or app.status == 'Text':
+    if app.status == 'Line' or app.status == 'Polygon' or app.status == 'Oval':
         if len(app.objects) > 0:
             app.objects[-1].assignPoints(event.x, event.y)
 
@@ -138,11 +138,6 @@ def mouseReleased(app, event):
         if app.image.action["crop"]["ing"]:
             app.image.action["crop"]["ePos"] = (event.x, event.y)
             app.image.action["crop"]["done"] = True
-
-# def undo(app):
-#     if app.objects == []:
-#         return
-#     app.objects.pop()
 
 def timerFired(app):
     app.image.update(app)
