@@ -1,7 +1,7 @@
 #           Imported Functions
 
 from cmu_112_graphics import *
-from helpers import *
+from button import *
 ################################################################################
 
 
@@ -30,12 +30,11 @@ class Text():
 #####
 
 def makeTextButtons(app):
-    app.textButtons = []
     textButtonActions = {'color': getTextFill, 'font': getFont, 'size': getSize, 'anchor': getAnchor, 'justify': getJustify, 'style': getStyle}
-    y = 100
+    y = 50
     x = 30
     for label in [ 'color', 'font', 'size', 'anchor', 'justify', 'style']:
-        app.textButtons.append(Button((50,30), location=(x, y), label=label, fill='light grey', action=textButtonActions[label]))
+        app.buttons.append(Button((50,30), location=(x, y), label=label, fill='light grey', action=textButtonActions[label]))
         x += 60
 
 def makeAutoTextValues(app):
@@ -49,9 +48,10 @@ def makeAutoTextValues(app):
 def getText(app, event):
     text = app.getUserInput('input your text here')
     if text != None:
+        print(app.size)
         app.objects.append(Text(str(text), (event.x, event.y), 
                         fill=app.textFill, 
-                        font=(app.font, app.size, app.style), 
+                        font=app.font, size=app.size, style=app.style, 
                         anchor=app.anchor, 
                         justify=app.justify
                         ))
@@ -72,31 +72,32 @@ def getJustify(app):
     app.justify = app.getUserInput('input left, right or center here')
 
 def getStyle(app):
-    app.style = app.getUserInput('input roman or italics here')
-
-
-
-
+    app.style = app.getUserInput('input roman, italics, bold, or underline here')
 
 ################################################################################
 #               test functions
 
-def appStarted(app):
-    makeAutoTextValues(app)
-    makeTextButtons(app)
-    app.objects = [ ]
+# def appStarted(app):
+#     makeAutoTextValues(app)
+#     makeTextButtons(app)
+#     app.objects = [ ]
 
-def mousePressed(app, event):
-    getText(app, event)
-
-def redrawAll(app, canvas):
-    for button in app.textButtons:
-        button.draw(canvas)
-    for object in app.objects:
-        object.draw(canvas)
+# def mousePressed(app, event):
+#     for button in app.textButtons:
+#         if button.isPressed(event.x, event.y):
+#             button.action(app)
+#             return
+#     getText(app, event)
 
 
-runApp(width=500, height=500)
+# def redrawAll(app, canvas):
+#     for button in app.textButtons:
+#         button.draw(canvas)
+#     for object in app.objects:
+#         object.draw(canvas)
+
+
+# runApp(width=500, height=500)
 
 
     

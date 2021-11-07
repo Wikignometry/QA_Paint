@@ -73,7 +73,7 @@ def mouseDragged(app, event):
 def mouseReleased(app, event):
     if app.image.action["crop"]["ing"]:
         app.image.action["crop"]["ePos"] = (event.x, event.y)
-        app.image.action["crop"]["done"] = True
+        app.image.action["crop"]["ing"] = False
 
 
 def keyPressed(app, event):
