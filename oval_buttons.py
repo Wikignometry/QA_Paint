@@ -4,7 +4,7 @@ def makeOvalButtons(app):
     buttons = []
     ovalButtonActions={'thickness':getOvalThickness, 'color':getOvalFill, 'outline':getOvalOutline}
 
-    y = 50
+    y = 30
     x = 100
     for label in ovalButtonActions:
         buttons.append(Button((80,30), location=(x, y), 

@@ -77,6 +77,7 @@ def keyPressed(app, event):
         undo(app)
 
 def mousePressed(app, event):
+
     for button in app.buttons['Tools']:
         if button.isPressed(event.x, event.y):
             button.action(app)
@@ -130,9 +131,14 @@ def mouseDragged(app, event):
 
 
 def mouseReleased(app, event):
+    for button in app.buttons['Tools']:
+        if button.isPressed(event.x, event.y): return
+    for button in app.buttons[app.status]:
+        if button.isPressed(event.x, event.y): return
     if app.status == 'Line' or app.status == 'Polygon' or app.status == 'Oval':
         if len(app.objects) > 0:
             app.objects[-1].assignPoints(event.x, event.y)
+            print('foo')
 
     elif app.status == 'Crop':
         if app.image.action["crop"]["ing"]:
