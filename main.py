@@ -5,6 +5,7 @@ from line import *
 from oval import *
 from helpers import *
 from image import *
+from tool_buttons import *
 
 def appStarted(app):
     app.status = 'Line'
@@ -12,11 +13,16 @@ def appStarted(app):
     app.objects = []
     app.currentObject = None
 
-    makeTextButtons(app)
+    app.buttons = dict()
+
+    app.buttons['Tools']= makeToolButtons(app)
+
+    app.buttons['Text'] = makeTextButtons(app)
     makeAutoTextValues(app)
     # create a bunch of top level attributes
 
-    app.buttons = []
+
+    
 
 
 def keyPressed(app, event):
@@ -116,7 +122,9 @@ def redrawAll(app, canvas):
     app.image.draw(app, canvas)
     for object in app.objects:
         object.draw(app, canvas)
-    for button in app.buttons:
+    for button in app.buttons['Tools']:
+        button.draw(canvas)
+    for button in app.buttons[app.status]:
         button.draw(canvas)
 
 runApp(width=500,height=500)
