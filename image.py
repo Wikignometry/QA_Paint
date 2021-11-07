@@ -40,7 +40,7 @@ class AppImage:
             self.action["crop"].update({"ing": True, "done": False, "sPos": tuple(), "dPos": tuple(), "ePos": tuple()})
 
     def undo(self):
-        if self.tempIndex > -1: self.tempIndex -= 1
+        if self.tempIndex > 0: self.tempIndex -= 1
 
     def redo(self):
         if -1 < self.tempIndex < len(self.tempData) - 1 and self.tempData: self.tempIndex += 1
