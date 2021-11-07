@@ -12,8 +12,16 @@ def makeOvalButtons(app):
         x += 60
     return buttons
 
+
+def makeAutoOvalValues(app):
+    app.ovalThickness = 3
+    app.ovalFill = ''
+    app.ovalOutline = 'black'
+
 def getOvalThickness(app):
-    app.ovalThickness = int(app.getUserInput('input your oval thickness here'))
+    thickness = (app.getUserInput('input your oval thickness here'))
+    if thickness != None:
+        app.ovalThickness = int(thickness)
 
 def getOvalFill(app):
     app.ovalFill = app.getUserInput('input your oval color here')
