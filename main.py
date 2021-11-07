@@ -6,6 +6,7 @@ from oval import *
 from helpers import *
 from image import *
 from tool_buttons import *
+from line_buttons import *
 
 def appStarted(app):
     app.status = 'Line'
@@ -21,6 +22,10 @@ def appStarted(app):
     makeAutoTextValues(app)
     # create a bunch of top level attributes
 
+    app.buttons['Line'] = makeLineButtons(app)
+    app.buttons['Polygon'] = []
+    app.buttons['Oval'] = []
+    app.buttons['Oval'] = []
 
     
 

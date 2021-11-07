@@ -1,9 +1,17 @@
 from button import *
     
 def makeLineButtons(app):
-    app.lineButtons = []
-    lineButtonActions={'thickness':getThickness, 'lineFill': getLineFill}
-    
+    buttons = []
+    lineButtonActions={'thickness':getThickness, 
+                        'lineFill': getLineFill}
+    y = 50
+    x = 30
+    for label in [ 'thickness', 'lineFill']:
+        buttons.append(Button((50,30), location=(x, y), 
+        label=label, fill='light grey', action=lineButtonActions[label]))
+        x += 60
+    return buttons
+
 def getThickness(app):
     app.thickness = app.getUserInput('input your line thickness here')
 
