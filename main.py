@@ -7,9 +7,6 @@ from helpers import *
 def appStarted(app):
     app.status = 'Polygon'
     app.objects = []
-    makeTextButtons(app)
-    makeAutoTextValues(app)
-
 
 def keyPressed(app, event):
     if event.key == 'l':
@@ -18,17 +15,13 @@ def keyPressed(app, event):
         app.status = 'Polygon'
     elif event.key == 'o':
         app.status = 'Oval'
-    elif event.key == 't':
-        app.status = 'Text'
     elif event.key == 'w':
         print(app.objects)
         
     elif event.key == 'z':
         undo(app)
 
-def mousePressed(app, event):
-    if app.status == 'Text':
-        getText(app, event.x, event.y)
+def mousePressed(app, event):   
     if app.status == 'Line':
         app.objects.append(Line(event.x, event.y))
     elif app.status == 'Polygon':
@@ -51,8 +44,6 @@ def undo(app):
 
 
 def redrawAll(app, canvas):
-    for button in app.textButtons:
-        button.draw(canvas)
     for object in app.objects:
         object.draw(canvas)
 
