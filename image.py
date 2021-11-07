@@ -23,6 +23,8 @@ class AppImage:
             dX, dY = (app.width / 2) - (width / 2), (app.height / 2) - (height / 2)
             x0, y0 = min(sPos[0], ePos[0]) - dX, min(sPos[1], ePos[1]) - dY
             x1, y1 = max(sPos[0], ePos[0]) - dX, max(sPos[1], ePos[1]) - dY
+            # drop previous redo-move after tempIndex
+            self.tempData = self.tempData[:self.tempIndex + 1]
             self.tempData.append(self.tempData[self.tempIndex].crop((x0, y0, x1, y1)))
             self.tempIndex += 1
 
