@@ -10,7 +10,6 @@ class AppImage:
         self.action = {"crop": {"ing": False, "done": False, "sPos": tuple(), "dPos": tuple(), "ePos": tuple()},
                        "rotate": {"ing": False},
                        "brightness": {"ing": False, "done": False, "increase": False, "decrease": False, "ratio": 1.1}}
-
     def importImage(self, path: str) -> None:
         self.initData = Image.open(path)
         self.currData.append(self.initData)
@@ -52,6 +51,9 @@ class AppImage:
                         r, g, b = (int(r / self.action["brightness"]["ratio"]),
                                    int(g / self.action["brightness"]["ratio"]),
                                    int(b / self.action["brightness"]["ratio"]))
+                    if r > 255: r = 255
+                    if g > 255: g = 255
+                    if b > 255: b = 255
                     tempData.putpixel((x, y), (r, g, b))
             self.currData.append(tempData)
             self.currIndex += 1
@@ -143,4 +145,4 @@ def redrawAll(app, canvas):
     app.image.draw(app, canvas)
 
 
-runApp(width=1920, height=1080)
+# runApp(width=1920, height=1080)
