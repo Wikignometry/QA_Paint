@@ -4,6 +4,9 @@ class Polygon():
         self.status = 0
         self.currentLocation = (x, y)
         self.w0, self.w1, self.h0, self.h1 = (0, 0, 0, 0)
+        self.width = 3
+        self.fill = 'white'
+        self.outline = 'black'
     
     def __repr__(self):
         return f'Polygon({self.points[0]}, {self.points[-1]})'
@@ -40,4 +43,4 @@ class Polygon():
             x0, y0 = self.points[0]
             x1, y1 = self.points[1]
         
-        canvas.create_rectangle(x0, y0, x1, y1, width = 3)
+        canvas.create_rectangle(x0, y0, x1, y1 , width = self.width, fill = self.fill, outline = self.outline)
