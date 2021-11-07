@@ -38,12 +38,9 @@ class Button():
     def draw(self, canvas):
         if self.location == None: return # does not draw if location is None
         x, y = self.location
-        canvas. create_rectangles(x - self.width//2, y - self.height//2,
+        canvas.create_rectangle(x - self.width//2, y - self.height//2,
                                 x + self.width//2, y + self.height//2,
-                                r=10, fill=self.fill, outline=self.outline)
-
-
-
+                                fill=self.fill, outline=self.outline)
 
 ###################################################################
 #       Test Functions
@@ -59,21 +56,21 @@ def testButtonClass():
     assert(button1.isPressed(5, 27) == False)
     print('Passed!')
 
-# def appStarted(app):
-#     app.button = Button((50,50), (100,100), lambda: print('foo'), fill='royalBlue')
+def appStarted(app):
+    app.button = Button((50,50), (100,100), lambda: print('foo'), fill='royalBlue')
 
-# def mousePressed(app, event):
-#     if app.button.isPressed(event.x, event.y):
-#         app.button.action()
+def mousePressed(app, event):
+    if app.button.isPressed(event.x, event.y):
+        app.button.action()
 
-# def redrawAll(app, canvas):
-#     app.button.draw(canvas)
+def redrawAll(app, canvas):
+    app.button.draw(canvas)
 
 ###################################################################
 #       Code to run
 
 testButtonClass()
-# runApp(width=200, height=200)
+runApp(width=200, height=200)
 
 
 
