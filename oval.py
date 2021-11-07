@@ -1,12 +1,12 @@
 class Oval():
-    def __init__(self, x, y,outlineThickness,outlineColor,fill):
+    def __init__(self, x, y, fill, outlineThickness, outline):
         self.points = [(x, y)]
         self.status = 0
         self.currentLocation = (x, y)
         self.w0, self.w1, self.h0, self.h1 = (0, 0, 0, 0)
         self.width = outlineThickness
         self.fill = fill
-        self.outline = outlineColor
+        self.outline = outline
     
     def __repr__(self):
         return f'Oval({self.points[0]}, {self.points[-1]})'

@@ -23,6 +23,7 @@ def appStarted(app):
     app.buttons['Tools']= makeToolButtons(app)
 
     makeAutoTextValues(app)
+    makeAutoOvalValues(app)
     # create a bunch of top level attributes
 
     app.buttons['Line'] = makeLineButtons(app)
@@ -95,7 +96,7 @@ def mousePressed(app, event):
         app.objects.append(Polygon(event.x, event.y,app.polygonSides, app.polygonOutlineThickness, app.polygonOutlineColor, app.polygonFill))
 
     elif app.status == 'Oval':
-        app.objects.append(Oval(event.x, event.y,app.ovalThickness,app.ovalOutline,app.ovalFill))
+        app.objects.append(Oval(event.x, event.y, app.ovalFill, app.ovalThickness, app.ovalOutline))
 
     elif app.status == 'Crop':
         if app.image.action["crop"]["ing"]:

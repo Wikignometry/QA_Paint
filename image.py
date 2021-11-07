@@ -10,7 +10,6 @@ class AppImage:
         self.action = {"crop": {"ing": False, "done": False, "sPos": tuple(), "dPos": tuple(), "ePos": tuple()},
                        "rotate": {"ing": False},
                        "brightness": {"ing": False, "done": False, "increase": False, "decrease": False, "ratio": 1.1}}
-
     def importImage(self, path: str) -> None:
         self.initData = Image.open(path)
         self.currData.append(self.initData)
@@ -52,6 +51,9 @@ class AppImage:
                         r, g, b = (int(r / self.action["brightness"]["ratio"]),
                                    int(g / self.action["brightness"]["ratio"]),
                                    int(b / self.action["brightness"]["ratio"]))
+                    if r > 255: r = 255
+                    if g > 255: g = 255
+                    if b > 255: b = 255
                     tempData.putpixel((x, y), (r, g, b))
             self.currData.append(tempData)
             self.currIndex += 1
@@ -62,6 +64,9 @@ class AppImage:
     def draw(self, app: TopLevelApp, canvas: WrappedCanvas) -> None:
         if self.currData:
             canvas.create_image(app.width / 2, app.height / 2, image=ImageTk.PhotoImage(self.currData[self.currIndex]))
+            width, height = self.currData[self.currIndex].size
+            dX, dY = (app.width / 2) - (width / 2), (app.height / 2) - (height / 2)
+            canvas.create_rectangle(dX, dY, dX + width, dY + height, width=1)
         if self.action["crop"]["ing"] and self.action["crop"]["dPos"]:
             self.drawCropRegion(canvas, self.action["crop"]["sPos"], self.action["crop"]["dPos"])
 
@@ -140,4 +145,4 @@ def redrawAll(app, canvas):
     app.image.draw(app, canvas)
 
 
-# runApp(width=500, height=500)
+# runApp(width=1920, height=1080)
