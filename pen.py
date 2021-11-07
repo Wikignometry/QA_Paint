@@ -17,7 +17,9 @@ class Pen():
         self.points.append((x, y))
 
     def draw(self, app, canvas):
-        for i in range(len(self.points)-1):
-            x0,y0=self.points[i]
-            x1,y1=self.points[i+1]
-            canvas.create_line(x0, y0, x1, y1, width = self.width, fill = self.fill)
+        if len(self.points) > 2:
+            canvas.create_line(self.points, width = self.width, fill = self.fill, smooth=True)
+        # for i in range(len(self.points)-1):
+        #     x0,y0=self.points[i]
+        #     x1,y1=self.points[i+1]
+        #     canvas.create_line(x0, y0, x1, y1, width = self.width, fill = self.fill)
