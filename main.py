@@ -124,10 +124,10 @@ def mouseReleased(app, event):
             app.image.action["crop"]["ePos"] = (event.x, event.y)
             app.image.action["crop"]["done"] = True
 
-def undo(app):
-    if app.objects == []:
-        return
-    app.objects.pop()
+# def undo(app):
+#     if app.objects == []:
+#         return
+#     app.objects.pop()
 
 def timerFired(app):
     app.image.update(app)

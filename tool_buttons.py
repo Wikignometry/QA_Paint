@@ -7,12 +7,13 @@ def makeToolButtons(app):
                         'oval': initiateOval,
                         'crop': initiateCrop,
                         'drag': initiateDrag,
-                        'text': initiateText}
+                        'text': initiateText,
+                        'undo': initiateUndo}
     y = 100
     x = 30
-    for label in [ 'line', 'polygon', 'oval', 'crop', 'drag', 'text']:
-        buttons.append(Button((50,30), location=(x, y), label=label, fill='light grey', action=textButtonActions[label]))
-        y += 40
+    for label in [ 'line', 'polygon', 'oval', 'crop', 'drag', 'text','undo']:
+        buttons.append(Button((50,50), location=(x, y), label=label, fill='light grey', action=textButtonActions[label]))
+        y += 60
     return buttons
 
 def initiateLine(app):
@@ -33,6 +34,14 @@ def initiateDrag(app):
 def initiateText(app):
     app.status = 'Text'
 
+def initiateUndo(app):
+    undo(app)
+
+def undo(app):
+    if app.objects == []:
+        return
+    app.objects.pop()
+    
 ################################################################################
 #               test functions
 
