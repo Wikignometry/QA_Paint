@@ -2,9 +2,11 @@ from  button import *
 
 def makeImageButtons(app):
     buttons = []
-    imageButtonActions={'import':getImage,'crop':initiateCrop, 'rotate':rotateImage, 'export':exportImage}
+    imageButtonActions={'import':getImage,'crop':initiateCrop, 
+                        'rotate':rotateImage, 'export':exportImage,
+                        'brightness': initiateBrightness}
 
-    y = 50
+    y = 30
     x = 100
     for label in imageButtonActions:
         buttons.append(Button((80,30), location=(x, y), 
@@ -22,6 +24,8 @@ def initiateCrop(app):
 def rotateImage(app):
     app.image.action["rotate"]["ing"] = True
 
+def initiateBrightness(app):
+    app.image.action["brightness"]["ing"] = True
 
 def exportImage(app):
     filePath = filedialog.asksaveasfilename(initialfile="export-image", defaultextension=".jpg",

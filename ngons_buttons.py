@@ -4,7 +4,7 @@ def makeNGonButtons(app):
     buttons = []
     nGonButtonActions ={'outline\nthickness':getNGonThickness, 'fill':getNGonFill, 'outline\ncolor':getNGonOutline, 'sides':getNGonSides}
     
-    y = 50
+    y = 30
     x = 100
     for label in nGonButtonActions:
         buttons.append(Button((80,30), location=(x, y), 
