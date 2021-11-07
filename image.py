@@ -12,9 +12,7 @@ class AppImage:
                        "brightness": {"ing": False, "done": False, "increase": False, "decrease": False, "ratio": 1.1}}
 
     def importImage(self, path: str) -> None:
-        im = Image.open(path)
-        # resized_im = im.resize()
-        self.initData = im
+        self.initData = Image.open(path).resize((400, 400))
         self.currData.append(self.initData)
         self.currIndex += 1
 
@@ -24,7 +22,7 @@ class AppImage:
     def cropImage(self, app, sPos: tuple, ePos: tuple) -> None:
         if self.currData:
             width, height = self.currData[self.currIndex].size
-            dX, dY = (app.width / 2) - (width / 2), (app.height / 2) - (height / 2)
+            dX, dY = 300 - (width / 2), 300 - (height / 2)
             x0, y0 = min(sPos[0], ePos[0]) - dX, min(sPos[1], ePos[1]) - dY
             x1, y1 = max(sPos[0], ePos[0]) - dX, max(sPos[1], ePos[1]) - dY
             # drop previous redo-move after tempIndex
@@ -66,10 +64,10 @@ class AppImage:
 
     def draw(self, app: TopLevelApp, canvas: WrappedCanvas) -> None:
         if self.currData:
-            canvas.create_image(app.width / 2, app.height / 2, image=ImageTk.PhotoImage(self.currData[self.currIndex]))
+            canvas.create_image(300, 300, image=ImageTk.PhotoImage(self.currData[self.currIndex]))
             width, height = self.currData[self.currIndex].size
-            dX, dY = (app.width / 2) - (width / 2), (app.height / 2) - (height / 2)
-            canvas.create_rectangle(dX, dY, dX + width, dY + height, width=1)
+            dX, dY = 300 - (width / 2), 300 - (height / 2)
+            # canvas.create_rectangle(dX, dY, dX + width, dY + height, width=1)
         if self.action["crop"]["ing"] and self.action["crop"]["dPos"]:
             self.drawCropRegion(canvas, self.action["crop"]["sPos"], self.action["crop"]["dPos"])
 
@@ -148,4 +146,4 @@ def redrawAll(app, canvas):
     app.image.draw(app, canvas)
 
 
-runApp(width=500, height=500)
+# runApp(width=500, height=500)

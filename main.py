@@ -18,7 +18,7 @@ def appStarted(app):
     app.image = AppImage()
     app.objects = []
     app.currentObject = None
-
+    app.canvasMargin = (70, 85)
     app.buttons = dict()
 
     app.buttons['Tools']= makeToolButtons(app)
@@ -96,8 +96,8 @@ def mousePressed(app, event):
         app.objects.append(Oval(event.x, event.y, app.ovalFill, app.ovalThickness, app.ovalOutline))
 
     elif app.status == 'Crop':
-        if app.image.action["crop"]["ing"]:
-            app.image.action["crop"]["sPos"] = (event.x, event.y)
+        app.image.action["crop"]["ing"] = True
+        app.image.action["crop"]["sPos"] = (event.x, event.y)
 
     elif app.status == 'Pen':
         app.objects.append(Pen(event.x,event.y, app.lineThickness, app.lineFill))
@@ -147,7 +147,7 @@ def redrawAll(app, canvas):
     app.image.draw(app, canvas)
     for object in app.objects:
         object.draw(app, canvas)
-    canvas.create_rectangle(70, 85, app.width-5, app.height-5, width=3)
+    canvas.create_rectangle(app.canvasMargin[0], app.canvasMargin[1], app.width-5, app.height-5, width=3)
     for button in app.buttons['Tools']:
         button.draw(canvas)
     for button in app.buttons[app.status]:
