@@ -1,5 +1,5 @@
 from cmu_112_graphics import *
-
+from text import *
 from polygon import *
 from line import *
 from oval import *
@@ -11,6 +11,12 @@ def appStarted(app):
     app.image = AppImage()
     app.objects = []
     app.currentObject = None
+
+    makeTextButtons(app)
+    makeAutoTextValues(app)
+    # create a bunch of top level attributes
+
+    app.buttons = []
 
 
 def keyPressed(app, event):
@@ -48,6 +54,10 @@ def keyPressed(app, event):
         undo(app)
 
 def mousePressed(app, event):
+    for button in app.buttons:
+        if button.isPressed(event.x, event.y):
+            button.action(app)
+
     if app.status == 'Line':
         app.objects.append(Line(event.x, event.y))
 
@@ -99,12 +109,14 @@ def undo(app):
     app.objects.pop()
 
 def timerFired(app):
-    # app.image.update()
+    app.image.update(app)
     pass
 
 def redrawAll(app, canvas):
-    # app.image.draw(app, canvas)
+    app.image.draw(app, canvas)
     for object in app.objects:
         object.draw(app, canvas)
+    for button in app.buttons:
+        button.draw(canvas)
 
 runApp(width=500,height=500)
