@@ -13,7 +13,9 @@ def makeLineButtons(app):
     return buttons
 
 def getLineThickness(app):
-    app.lineThickness = int(app.getUserInput('input your line thickness here'))
+     thickness = app.getUserInput('input your line thickness here')
+     if thickness != None:
+        app.lineThickness = int(thickness)
 
 def getLineFill(app):
     app.lineFill = app.getUserInput('input your line color here')
