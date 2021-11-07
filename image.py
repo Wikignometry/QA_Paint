@@ -1,5 +1,6 @@
 from cmu_112_graphics import *
 from PIL import Image
+from pyscreenshot import grab
 
 
 class AppImage:
@@ -9,15 +10,17 @@ class AppImage:
         self.currData = list()
         self.action = {"crop": {"ing": False, "done": False, "sPos": tuple(), "dPos": tuple(), "ePos": tuple()},
                        "rotate": {"ing": False},
-                       "brightness": {"ing": False, "done": False, "increase": False, "decrease": False, "ratio": 1.1}}
+                       "brightness": {"ing": False, "done": False, "increase": False, "decrease": False, "ratio": 1.1},
+                       "selectColor": {"ing": False, "done": False, "sPos": tuple(), "sCol": tuple(), "eCol": tuple()}}
 
     def importImage(self, app: TopLevelApp, path: str) -> None:
         self.initData = Image.open(path).resize((app.width - app.canvasMargin[0], app.height - app.canvasMargin[1]))
         self.currData.append(self.initData)
         self.currIndex += 1
 
-    def exportImage(self, path: str) -> None:
-        self.currData[self.currIndex].save(path)
+    def exportImage(self, app: TopLevelApp, path: str) -> None:
+        cap = grab(bbox=(app.canvasMargin[0] + 10, app.canvasMargin[1] + 35, 500 + 10, 500 + 30))
+        cap.save(path)
 
     def cropImage(self, app, sPos: tuple, ePos: tuple) -> None:
         if self.currData:
