@@ -3,6 +3,7 @@ from button import *
 def makeToolButtons(app):
     buttons = []
     textButtonActions = {'line': initiateLine, 
+                         'pen': initiatePen,
                         'polygon': initiatePolygon, 
                         'oval': initiateOval,
                         'image': initiateImage,
@@ -18,6 +19,9 @@ def makeToolButtons(app):
 
 def initiateLine(app):
     app.status = 'Line'
+
+def initiatePen(app):
+    app.status = 'Pen'
 
 def initiatePolygon(app):
     app.status = 'Polygon'
