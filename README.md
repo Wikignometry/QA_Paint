@@ -1,6 +1,6 @@
 # Quantum Aliased Paint
 
-DEMO:https://youtu.be/0qGxYQypkzQ
+DEMO: https://youtu.be/0qGxYQypkzQ
 
 This is a simple graphics editor with some image editing capabilities. 
 
