@@ -1,5 +1,6 @@
+import math
 class Polygon():
-    def __init__(self, x, y,outlineThickness,outlineColor,fill):
+    def __init__(self, x, y,n,outlineThickness,outlineColor,fill):
         self.points = [(x, y)]
         self.status = 0
         self.currentLocation = (x, y)
@@ -7,6 +8,9 @@ class Polygon():
         self.width = outlineThickness
         self.fill = fill
         self.outline = outlineColor
+        self.n = n
+        self.npoints = []
+        self.angle = 2*math.pi/self.n
     
     def __repr__(self):
         return f'Polygon({self.points[0]}, {self.points[-1]})'
@@ -15,6 +19,17 @@ class Polygon():
         if self.status < 1:
             self.points.append((x, y))
             self.status += 1
+            
+    def calculateRadius(self):
+        if len(self.points) == 1:
+            x0, y0 = self.points[0]
+            x1, y1 = self.currentLocation
+        else:
+            x0, y0 = self.points[0]
+            x1, y1 = self.points[1]
+
+        self.midpoint = ((x1+x0)/2, (y1+y0)/2)
+        self.r = ((x1-x0)**2 + (y1-y0)**2)**0.5 / 2
 
     def moveHelper(self, x, y):
         x0, y0 = self.points[0]
@@ -33,11 +48,21 @@ class Polygon():
         self.points[1] = (nx1, ny1)
 
     def draw(self, app, canvas):
-        if len(self.points) == 1:
-            x0, y0 = self.points[0]
-            x1, y1 = self.currentLocation
+        if self.n == 4:
+            if len(self.points) == 1:
+                x0, y0 = self.points[0]
+                x1, y1 = self.currentLocation
+            else:
+                x0, y0 = self.points[0]
+                x1, y1 = self.points[1]
+            
+            canvas.create_rectangle(x0, y0, x1, y1 , width = self.width, fill = self.fill, outline = self.outline)
         else:
-            x0, y0 = self.points[0]
-            x1, y1 = self.points[1]
-        
-        canvas.create_rectangle(x0, y0, x1, y1 , width = self.width, fill = self.fill, outline = self.outline)
+            self.calculateRadius()
+            self.npoints = []
+            for point in range(self.n):
+                nx = self.midpoint[0] + self.r*math.cos(point*self.angle)
+                ny = self.midpoint[1] + self.r*math.sin(point*self.angle)
+                self.npoints.extend([nx, ny])
+            
+            canvas.create_polygon(self.npoints, width = self.width, outline = self.outline, fill = self.fill)
