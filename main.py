@@ -10,9 +10,7 @@ from line_buttons import *
 from ngons_buttons import *
 from oval_buttons import *
 from image_buttons import *
-
 from button import *
-from polygon_buttons import *
 
 def appStarted(app):
     app.status = 'Line'
@@ -120,7 +118,7 @@ def mouseDragged(app, event):
     if app.status == 'Line' or app.status == 'Polygon' or app.status == 'Oval':
         if app.objects != []:
             app.objects[-1].currentLocation = (event.x, event.y)
-    
+
     elif app.status == 'Crop':
         if app.image.action["crop"]["ing"]:
             app.image.action["crop"]["dPos"] = (event.x, event.y) 
