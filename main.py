@@ -72,11 +72,6 @@ def keyPressed(app, event):
         app.image.undo()
     if event.key == "control-r":
         app.image.redo()
-    
-
-    elif event.key == 'w':
-        print(app.objects)
-        
     elif event.key == 'z':
         undo(app)
 
@@ -100,8 +95,8 @@ def mousePressed(app, event):
         app.objects.append(Oval(event.x, event.y,app.ovalThickness,app.ovalOutline,app.ovalFill))
 
     elif app.status == 'Crop':
-        if app.image.action["crop"]["ing"]:
-            app.image.action["crop"]["sPos"] = (event.x, event.y)
+        app.image.action["crop"]["ing"] = True
+        app.image.action["crop"]["sPos"] = (event.x, event.y)
     
     elif app.status == 'Drag':
         for object in app.objects:
