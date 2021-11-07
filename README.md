@@ -1,5 +1,7 @@
 # Quantum Aliased Paint
 
+DEMO:https://youtu.be/0qGxYQypkzQ
+
 This is a simple graphics editor with some image editing capabilities. 
 
 Tools can be switched using the grey buttons on the side
