@@ -7,9 +7,9 @@ def makePolygonButtons(app):
     y = 50
     x = 100
     for label in polygonButtonActions:
-        buttons.append(Button((50,30), location=(x, y), 
+        buttons.append(Button((80,30), location=(x, y), 
         label=label, fill='light grey', action=polygonButtonActions[label]))
-        x += 60
+        x += 90
     return buttons
 
 def getPolygonThickness(app):
