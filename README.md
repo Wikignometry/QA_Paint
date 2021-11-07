@@ -10,6 +10,8 @@ To use this program, please install the following modules:
 * cmu_112_graphics
 * pyscreenshot
 
+## Available Tools
+
 ### line
 creates a straight line by clicking and dragging between two points
 * thickness: changes the thickness of the line
