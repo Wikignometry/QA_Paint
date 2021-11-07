@@ -5,7 +5,7 @@ def makeLineButtons(app):
     lineButtonActions={'thickness':getThickness, 
                         'lineFill': getLineFill}
     y = 50
-    x = 30
+    x = 60
     for label in [ 'thickness', 'lineFill']:
         buttons.append(Button((50,30), location=(x, y), 
         label=label, fill='light grey', action=lineButtonActions[label]))
