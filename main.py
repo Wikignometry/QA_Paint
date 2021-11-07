@@ -18,14 +18,15 @@ def appStarted(app):
 
     app.buttons['Tools']= makeToolButtons(app)
 
-    app.buttons['Text'] = makeTextButtons(app)
     makeAutoTextValues(app)
     # create a bunch of top level attributes
 
     app.buttons['Line'] = makeLineButtons(app)
     app.buttons['Polygon'] = []
     app.buttons['Oval'] = []
-    app.buttons['Oval'] = []
+    app.buttons['Crop'] = []
+    app.buttons['Drag'] = []
+    app.buttons['Text'] = makeTextButtons(app)
 
     
 
