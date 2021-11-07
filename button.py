@@ -27,6 +27,9 @@ class Button():
         self.fill = fill
         self.outline = outline
 
+    def __repr__(self):
+        return self.label
+
     # returns True if the button isPressed
     #       –> assumes that button is rectangular (doesn't account for rounded corners)
     def isPressed(self, x, y):

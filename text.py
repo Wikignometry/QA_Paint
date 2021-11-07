@@ -18,7 +18,7 @@ class Text():
         self.anchor = anchor
         self.style = style
 
-    def draw(self, canvas):
+    def draw(self, app, canvas):
         canvas.create_text(self.x, self.y, 
                     text=f'{self.text}', 
                     font = (self.font, self.size, self.style),

@@ -7,6 +7,7 @@ from helpers import *
 from image import *
 from tool_buttons import *
 from line_buttons import *
+from button import *
 
 def appStarted(app):
     app.status = 'Line'
@@ -66,9 +67,14 @@ def keyPressed(app, event):
         undo(app)
 
 def mousePressed(app, event):
-    for button in app.buttons:
+    for button in app.buttons['Tools']:
         if button.isPressed(event.x, event.y):
             button.action(app)
+            return
+    for button in app.buttons[app.status]:
+        if button.isPressed(event.x, event.y):
+            button.action(app)
+            return
 
     if app.status == 'Line':
         app.objects.append(Line(event.x, event.y))
@@ -92,6 +98,9 @@ def mousePressed(app, event):
             if minX < event.x < maxX and minY < event.y < maxY:
                 app.currentObject = object
                 object.moveHelper(event.x, event.y)
+
+    elif app.status == 'Text':
+        getText(app, event)
 
 def mouseDragged(app, event):
     if app.status == 'Line' or app.status == 'Polygon' or app.status == 'Oval':
