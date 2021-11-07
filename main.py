@@ -61,6 +61,15 @@ def keyPressed(app, event):
     elif event.key == 't':
         app.status = 'Pen'
 
+    elif event.key == "Up":
+        if app.image.action["brightness"]["ing"]:
+            app.image.action["brightness"]["increase"] = True
+            app.image.action["brightness"]["done"] = True
+    elif event.key == "Down":
+        if app.image.action["brightness"]["ing"]:
+            app.image.action["brightness"]["decrease"] = True
+            app.image.action["brightness"]["done"] = True
+
     # https://pythonspot.com/tk-file-dialogs/
     if event.key == "control-o":
         filePath = filedialog.askopenfilename(initialfile="import-image", defaultextension=".jpg", )
@@ -138,7 +147,6 @@ def mouseReleased(app, event):
     if app.status == 'Line' or app.status == 'Polygon' or app.status == 'Oval':
         if len(app.objects) > 0:
             app.objects[-1].assignPoints(event.x, event.y)
-            print('foo')
 
     elif app.status == 'Crop':
         if app.image.action["crop"]["ing"]:
@@ -158,5 +166,6 @@ def redrawAll(app, canvas):
         button.draw(canvas)
     for button in app.buttons[app.status]:
         button.draw(canvas)
+
 
 runApp(width=500,height=500)
