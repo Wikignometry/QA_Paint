@@ -116,7 +116,7 @@ def mousePressed(app, event):
         getText(app, event)
 
 def mouseDragged(app, event):
-    if app.status == 'Line' or app.status == 'Polygon' or app.status == 'Oval':
+    if app.status == 'Line' or app.status == 'Polygon' or app.status == 'Oval' or app.status == 'Text':
         if app.objects != []:
             app.objects[-1].currentLocation = (event.x, event.y)
     elif app.status == 'Pen':
@@ -130,7 +130,7 @@ def mouseDragged(app, event):
 
 
 def mouseReleased(app, event):
-    if app.status == 'Line' or app.status == 'Polygon' or app.status == 'Oval':
+    if app.status == 'Line' or app.status == 'Polygon' or app.status == 'Oval' or app.status == 'Text':
         if len(app.objects) > 0:
             app.objects[-1].assignPoints(event.x, event.y)
 
@@ -152,6 +152,7 @@ def redrawAll(app, canvas):
     app.image.draw(app, canvas)
     for object in app.objects:
         object.draw(app, canvas)
+    canvas.create_rectangle(70, 85, app.width-5, app.height-5, width=3)
     for button in app.buttons['Tools']:
         button.draw(canvas)
     for button in app.buttons[app.status]:
