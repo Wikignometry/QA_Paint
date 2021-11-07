@@ -20,13 +20,10 @@ class Oval():
         x0, y0 = self.points[0]
         x1, y1 = self.points[1]
 
-        minX, maxX = min(x0, x1), max(x0, x1)
-        minY, maxY = min(y0, y1), max(y0, y1)
-
-        self.w0 = x - minX
-        self.h0 = y - minY
-        self.w1 = maxX - x
-        self.h1 = maxY - y
+        self.w0 = x - x0
+        self.h0 = y - y0
+        self.w1 = x1 - x
+        self.h1 = y1 - y
 
     def move(self, newX, newY):
         nx0, ny0 = newX - self.w0, newY - self.h0
