@@ -35,5 +35,5 @@ def initiateBrightness(app):
 def exportImage(app):
     filePath = filedialog.asksaveasfilename(initialfile="export-image", defaultextension=".jpg",
                                                 filetypes=[("ImageFile", ".jpg")])
-    if filePath: app.image.exportImage(path=filePath)
+    if filePath: app.image.exportImage(app, path=filePath)
 

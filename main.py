@@ -77,7 +77,7 @@ def keyPressed(app, event):
     if event.key == "control-s" and app.image.currData:
         filePath = filedialog.asksaveasfilename(initialfile="export-image", defaultextension=".jpg",
                                                 filetypes=[("ImageFile", ".jpg")])
-        if filePath: app.image.exportImage(path=filePath)
+        if filePath: app.image.exportImage(app, path=filePath)
     if event.key == "control-z":
         app.image.undo()
     if event.key == "control-r":
