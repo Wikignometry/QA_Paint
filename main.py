@@ -14,7 +14,7 @@ def appStarted(app):
     app.image = AppImage()
     app.objects = []
     app.currentObject = None
-
+    
     app.buttons = dict()
 
     app.buttons['Tools']= makeToolButtons(app)
@@ -28,9 +28,9 @@ def appStarted(app):
     app.buttons['Crop'] = []
     app.buttons['Drag'] = []
     app.buttons['Text'] = makeTextButtons(app)
-
     
-
+    app.lineThickness=2
+    app.lineFill="black"
 
 def keyPressed(app, event):
     if event.key == 'l':
@@ -77,7 +77,7 @@ def mousePressed(app, event):
             return
 
     if app.status == 'Line':
-        app.objects.append(Line(event.x, event.y))
+        app.objects.append(Line(event.x, event.y,app.lineThickness,app.lineFill))
 
     elif app.status == 'Polygon':
         app.objects.append(Polygon(event.x, event.y))
