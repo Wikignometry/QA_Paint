@@ -43,6 +43,9 @@ def appStarted(app):
     app.polygonFill=""
     app.polygonOutlineColor="black"
     app.polygonSides=4
+    app.ovalThickness=2
+    app.ovalFill=""
+    app.ovalOutline="black"
 
 def keyPressed(app, event):
     if event.key == 'l':
