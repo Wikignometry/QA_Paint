@@ -40,4 +40,4 @@ class Oval():
             x0, y0 = self.points[0]
             x1, y1 = self.points[1]
         
-        canvas.create_oval(x0, y0, x1, y1, width = 3)
+        canvas.create_oval(x0, y0, x1, y1, width = self.width, outline = self.outline, fill = self.fill)
