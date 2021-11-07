@@ -11,8 +11,6 @@ def appStarted(app):
     app.image = AppImage()
     app.objects = []
     app.currentObject = None
-    makeTextButtons(app)
-    makeAutoTextValues(app)
 
 
 def keyPressed(app, event):
@@ -50,9 +48,6 @@ def keyPressed(app, event):
         undo(app)
 
 def mousePressed(app, event):
-    if app.status == 'Text':
-        getText(app, event.x, event.y)
-
     if app.status == 'Line':
         app.objects.append(Line(event.x, event.y))
 
@@ -109,8 +104,6 @@ def timerFired(app):
 
 def redrawAll(app, canvas):
     # app.image.draw(app, canvas)
-    for button in app.textButtons:
-        button.draw(canvas)
     for object in app.objects:
         object.draw(app, canvas)
 
