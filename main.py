@@ -18,7 +18,7 @@ def appStarted(app):
     app.image = AppImage()
     app.objects = []
     app.currentObject = None
-
+    app.canvasMargin = (70, 60)
     app.buttons = dict()
 
     app.buttons['Tools']= makeToolButtons(app)
@@ -61,10 +61,19 @@ def keyPressed(app, event):
     elif event.key == 't':
         app.status = 'Pen'
 
+    elif event.key == "Up":
+        if app.image.action["brightness"]["ing"]:
+            app.image.action["brightness"]["increase"] = True
+            app.image.action["brightness"]["done"] = True
+    elif event.key == "Down":
+        if app.image.action["brightness"]["ing"]:
+            app.image.action["brightness"]["decrease"] = True
+            app.image.action["brightness"]["done"] = True
+
     # https://pythonspot.com/tk-file-dialogs/
     if event.key == "control-o":
         filePath = filedialog.askopenfilename(initialfile="import-image", defaultextension=".jpg", )
-        if filePath: app.image.importImage(path=filePath)
+        if filePath: app.image.importImage(app, path=filePath)
     if event.key == "control-s" and app.image.currData:
         filePath = filedialog.asksaveasfilename(initialfile="export-image", defaultextension=".jpg",
                                                 filetypes=[("ImageFile", ".jpg")])
@@ -97,8 +106,8 @@ def mousePressed(app, event):
         app.objects.append(Oval(event.x, event.y, app.ovalFill, app.ovalThickness, app.ovalOutline))
 
     elif app.status == 'Crop':
-        if app.image.action["crop"]["ing"]:
-            app.image.action["crop"]["sPos"] = (event.x, event.y)
+        app.image.action["crop"]["ing"] = True
+        app.image.action["crop"]["sPos"] = (event.x, event.y)
 
     elif app.status == 'Pen':
         app.objects.append(Pen(event.x,event.y, app.lineThickness, app.lineFill))
@@ -152,10 +161,11 @@ def redrawAll(app, canvas):
     app.image.draw(app, canvas)
     for object in app.objects:
         object.draw(app, canvas)
-    canvas.create_rectangle(70, 85, app.width-5, app.height-5, width=3)
+    canvas.create_rectangle(app.canvasMargin[0], app.canvasMargin[1], app.width, app.height, width=3)
     for button in app.buttons['Tools']:
         button.draw(canvas)
     for button in app.buttons[app.status]:
         button.draw(canvas)
+
 
 runApp(width=500,height=500)
