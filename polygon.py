@@ -5,7 +5,7 @@ class Polygon():
         self.currentLocation = (x, y)
         self.w0, self.w1, self.h0, self.h1 = (0, 0, 0, 0)
         self.width = 3
-        self.fill = 'white'
+        self.fill = ''
         self.outline = 'black'
     
     def __repr__(self):
