@@ -105,4 +105,4 @@ def redrawAll(app, canvas):
     app.image.draw(app, canvas)
 
 
-runApp(width=500, height=500)
+# runApp(width=500, height=500)
