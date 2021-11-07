@@ -7,7 +7,8 @@ class AppImage:
         self.initData = None
         self.tempIndex = -1
         self.tempData = list()
-        self.action = {"crop": {"ing": True, "done": False, "sPos": tuple(), "dPos": tuple(), "ePos": tuple()}}
+        self.action = {"crop": {"ing": True, "done": False, "sPos": tuple(), "dPos": tuple(), "ePos": tuple()},
+                       "rotate": {"ing": False}}
 
     def importImage(self, path: str) -> None:
         self.initData = Image.open(path)
@@ -28,6 +29,12 @@ class AppImage:
             self.tempData.append(self.tempData[self.tempIndex].crop((x0, y0, x1, y1)))
             self.tempIndex += 1
 
+    def rotateImage(self):
+        if self.tempData:
+            self.tempData = self.tempData[:self.tempIndex + 1]
+            self.tempData.append(self.tempData[self.tempIndex].transpose(Image.ROTATE_270))
+            self.tempIndex += 1
+
     def drawCropRegion(self, canvas, sPos: tuple, ePos: tuple) -> None:
         canvas.create_rectangle(sPos[0], sPos[1], ePos[0], ePos[1], width=1)
 
@@ -42,6 +49,9 @@ class AppImage:
             self.cropImage(app, self.action["crop"]["sPos"], self.action["crop"]["ePos"])
             # reset self.action["crop"]
             self.action["crop"].update({"ing": True, "done": False, "sPos": tuple(), "dPos": tuple(), "ePos": tuple()})
+        if self.action["rotate"]["ing"]:
+            self.rotateImage()
+            self.action["rotate"]["ing"] = False
 
     def undo(self):
         if self.tempIndex > 0: self.tempIndex -= 1
@@ -63,7 +73,7 @@ def mouseDragged(app, event):
 def mouseReleased(app, event):
     if app.image.action["crop"]["ing"]:
         app.image.action["crop"]["ePos"] = (event.x, event.y)
-        app.image.action["crop"]["done"] = True
+        app.image.action["crop"]["ing"] = False
 
 
 def keyPressed(app, event):
@@ -79,6 +89,8 @@ def keyPressed(app, event):
         app.image.undo()
     if event.key == "control-r":
         app.image.redo()
+    if event.key == "r":
+        app.image.action["rotate"]["ing"] = True
 
 
 def timerFired(app):
