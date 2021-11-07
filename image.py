@@ -16,9 +16,10 @@ class AppImage:
         self.initData.save(path)
 
     def cropImage(self, sPos: tuple, ePos: tuple) -> None:
-        x0, y0 = min(sPos[0], ePos[0]), min(sPos[1], ePos[1])
-        x1, y1 = max(sPos[0], ePos[0]), max(sPos[1], ePos[1])
-        self.initData = self.initData.crop((x0, y0, x1, y1))
+        if self.tempData:
+            x0, y0 = min(sPos[0], ePos[0]), min(sPos[1], ePos[1])
+            x1, y1 = max(sPos[0], ePos[0]), max(sPos[1], ePos[1])
+            self.initData = self.initData.crop((x0, y0, x1, y1))
 
     def drawCropRegion(self, canvas, sPos: tuple, ePos: tuple) -> None:
         canvas.create_rectangle(sPos[0], sPos[1], ePos[0], ePos[1], width=1)
