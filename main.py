@@ -7,14 +7,19 @@ from helpers import *
 from image import *
 from tool_buttons import *
 from line_buttons import *
+from ngons_buttons import *
+from oval_buttons import *
+from image_buttons import *
+
 from button import *
+from polygon_buttons import *
 
 def appStarted(app):
     app.status = 'Line'
     app.image = AppImage()
     app.objects = []
     app.currentObject = None
-
+    
     app.buttons = dict()
 
     app.buttons['Tools']= makeToolButtons(app)
@@ -23,14 +28,19 @@ def appStarted(app):
     # create a bunch of top level attributes
 
     app.buttons['Line'] = makeLineButtons(app)
-    app.buttons['Polygon'] = []
-    app.buttons['Oval'] = []
-    app.buttons['Crop'] = []
+    app.buttons['Polygon'] = makeNGonButtons(app)
+    app.buttons['Oval'] = makeOvalButtons(app)
+    app.buttons['Image'] = makeImageButtons(app)
+    app.buttons['Crop'] = makeImageButtons(app)
     app.buttons['Drag'] = []
     app.buttons['Text'] = makeTextButtons(app)
 
-    
 
+    app.lineThickness=2
+    app.lineFill="black"
+    app.polygonOutlineThickness=2
+    app.polygonFill=""
+    app.polygonOutlineColor="black"
 
 def keyPressed(app, event):
     if event.key == 'l':
@@ -39,8 +49,8 @@ def keyPressed(app, event):
         app.status = 'Polygon'
     elif event.key == 'o':
         app.status = 'Oval'
-    elif event.key == 'c':
-        app.status = 'Crop'
+    elif event.key == 'i':
+        app.status = 'Image'
     elif event.key == 'd':
         app.status = 'Drag'
     elif event.key == 't':
@@ -77,10 +87,10 @@ def mousePressed(app, event):
             return
 
     if app.status == 'Line':
-        app.objects.append(Line(event.x, event.y))
+        app.objects.append(Line(event.x, event.y,app.lineThickness,app.lineFill))
 
     elif app.status == 'Polygon':
-        app.objects.append(Polygon(event.x, event.y))
+        app.objects.append(Polygon(event.x, event.y, app.polygonOutlineThickness, app.polygonOutlineColor, app.polygonFill))
 
     elif app.status == 'Oval':
         app.objects.append(Oval(event.x, event.y))
@@ -104,7 +114,8 @@ def mousePressed(app, event):
 
 def mouseDragged(app, event):
     if app.status == 'Line' or app.status == 'Polygon' or app.status == 'Oval':
-        app.objects[-1].currentLocation = (event.x, event.y)
+        if app.objects != []:
+            app.objects[-1].currentLocation = (event.x, event.y)
     
     elif app.status == 'Crop':
         if app.image.action["crop"]["ing"]:
@@ -124,10 +135,10 @@ def mouseReleased(app, event):
             app.image.action["crop"]["ePos"] = (event.x, event.y)
             app.image.action["crop"]["done"] = True
 
-def undo(app):
-    if app.objects == []:
-        return
-    app.objects.pop()
+# def undo(app):
+#     if app.objects == []:
+#         return
+#     app.objects.pop()
 
 def timerFired(app):
     app.image.update(app)

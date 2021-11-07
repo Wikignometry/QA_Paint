@@ -1,11 +1,11 @@
 class Line():
-    def __init__(self, x, y):
+    def __init__(self, x, y, thickness, fill):
         self.points = [(x, y)]
         self.status = 0
         self.currentLocation = (x, y)
         self.w0, self.w1, self.h0, self.h1 = (0, 0, 0, 0)
-        self.width = 3
-        self.fill = 'black'
+        self.width = thickness
+        self.fill = fill
         self.style = ''
         
     
