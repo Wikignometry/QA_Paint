@@ -65,7 +65,7 @@ def keyPressed(app, event):
     if event.key == "control-o":
         filePath = filedialog.askopenfilename(initialfile="import-image", defaultextension=".jpg", )
         if filePath: app.image.importImage(path=filePath)
-    if event.key == "control-s" and app.image.tempData:
+    if event.key == "control-s" and app.image.currData:
         filePath = filedialog.asksaveasfilename(initialfile="export-image", defaultextension=".jpg",
                                                 filetypes=[("ImageFile", ".jpg")])
         if filePath: app.image.exportImage(path=filePath)
