@@ -7,7 +7,8 @@ def makeToolButtons(app):
                         'oval': initiateOval,
                         'image': initiateImage,
                         'drag': initiateDrag,
-                        'text': initiateText}
+                        'text': initiateText,
+                        'undo': initiateUndo}
     y = 100
     x = 30
     for label in [ 'line', 'polygon', 'oval', 'image', 'drag', 'text']:
@@ -33,6 +34,14 @@ def initiateDrag(app):
 def initiateText(app):
     app.status = 'Text'
 
+def initiateUndo(app):
+    undo(app)
+
+def undo(app):
+    if app.objects == []:
+        return
+    app.objects.pop()
+    
 ################################################################################
 #               test functions
 
