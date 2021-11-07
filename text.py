@@ -62,11 +62,11 @@ class Text():
 def makeTextButtons(app):
     buttons = []
     textButtonActions = {'color': getTextFill, 'font': getFont, 'size': getSize, 'anchor': getAnchor, 'justify': getJustify, 'style': getStyle}
-    y = 50
+    y = 30
     x = 100
     for label in [ 'color', 'font', 'size', 'anchor', 'justify', 'style']:
-        buttons.append(Button((50,30), location=(x, y), label=label, fill='light grey', action=textButtonActions[label]))
-        x += 60
+        buttons.append(Button((80,30), location=(x, y), label=label, fill='powder blue', action=textButtonActions[label]))
+        x += 90
     return buttons
 
 def makeAutoTextValues(app):

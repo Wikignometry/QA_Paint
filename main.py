@@ -138,7 +138,6 @@ def mouseReleased(app, event):
     if app.status == 'Line' or app.status == 'Polygon' or app.status == 'Oval':
         if len(app.objects) > 0:
             app.objects[-1].assignPoints(event.x, event.y)
-            print('foo')
 
     elif app.status == 'Crop':
         if app.image.action["crop"]["ing"]:

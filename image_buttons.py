@@ -10,7 +10,7 @@ def makeImageButtons(app):
     x = 100
     for label in imageButtonActions:
         buttons.append(Button((80,30), location=(x, y), 
-        label=label, fill='light grey', action=imageButtonActions[label]))
+        label=label, fill='powder blue', action=imageButtonActions[label]))
         x += 90
     return buttons
 
