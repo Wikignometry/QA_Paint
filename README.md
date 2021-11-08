@@ -12,6 +12,8 @@ To use this program, please install the following modules:
 * cmu_112_graphics
 * pyscreenshot
 
+The program may not function properly on some operating systems. 
+
 ## Available Tools
 
 ### line
