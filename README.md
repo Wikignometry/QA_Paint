@@ -2,7 +2,7 @@
 
 DEMO: https://youtu.be/0qGxYQypkzQ
 
-This is a simple graphics editor with some image editing capabilities built by team Quantum Aliasing. 
+This is a simple graphics editor with some image editing capabilities built by Team Quantum Aliasing. 
 
 Tools can be switched using the grey buttons on the side
 
